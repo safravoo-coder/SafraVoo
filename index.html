@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7GR2ZW1K2X"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config', 'G-7GR2ZW1K2X');
+</script>
+
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#16A34A"/>
+  <title>SafraVoo — A melhor solução para a sua lavoura🌱</title>
+  <style>
+
+    /* ─────────────────────────────────────
+       RESET E BASE
+    ───────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #F6F7F5; color: #1C1917; }
+    a { text-decoration: none; }
+    button { cursor: pointer; font-family: inherit; }
+    ::-webkit-scrollbar { display: none; }
+
+    /* ─────────────────────────────────────
+       HEADER
+    ───────────────────────────────────── */
+     .header { background: #fff; padding: 17px 17px 0; border-bottom: 1px solid #E7E0D8; position: sticky; top: 0; z-index: 50; }
+     .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 08px; }
+     .container-imagem {
+            width: 100%;           /* ou um valor fixo: 800px, 50%, etc */
+            max-width: 800px;      /* limita tam. Máx. */
+            margin: 20px auto;     /* centraliza */
+            padding: 10px;
+            border: 1px solid #ddd; /* opcional: só para ver o espaço */
+        }
+     .imagem-responsiva {
+            width: 100%;           /*ocupa toda largura do container*/
+            height: auto;          /* mantém a proporção */
+            display: block;        /* remove espaços indesejados embaixo */
+            border-radius: 01px;    /* opcional: cantos arredondados */
+        }
+     .location { font-size: 11px; color: #A8A29E; margin-bottom: 2px; display: flex; align-items: center; gap: 4px; }
+     .logo-text { font-weight: 900; font-size: 24px; letter-spacing: -0.5px; line-height: 1; }
+     .logo-text span { color: #16A34A; }
+     
+    /* ─────────────────────────────────────
+       BUSCA E FILTROS
+    ───────────────────────────────────── */
+    .search-wrap { position: relative; margin-bottom: 12px; }
+    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 15px; }
+    .search-input { width: 100%; border: 1.5px solid #E7E0D8; border-radius: 10px; padding: 11px 16px 11px 38px; font-size: 14px; outline: none; background: #F5F2ED; color: #1C1917; }
+    .filtros { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 14px; scrollbar-width: none; }
+    .chip { flex-shrink: 0; border: none; border-radius: 10px; padding: 7px 16px; font-size: 12px; font-weight: 600; background: #F0EBE3; color: #78716C; transition: all 0.15s; }
+    .chip.ativo { background: #16A34A; color: #fff; }
+
+    /* ─────────────────────────────────────
+       TOGGLE DISPONIBILIDADE
+    ───────────────────────────────────── */
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px 4px; }
+    .toggle-btn { font-size: 12px; color: #78716C; display: flex; align-items: center; gap: 6px; background: none; border: none; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: #D6D3D1; transition: background 0.2s; }
+    .dot.ativo { background: #16A34A; }
+    .count { font-size: 12px; color: #A8A29E; }
+
+    /* ─────────────────────────────────────
+       DESTAQUES
+    ───────────────────────────────────── */
+    .section-title { font-weight: 800; font-size: 16px; padding: 12px 20px 10px; }
+    .destaques-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 0 20px 4px; scrollbar-width: none; }
+    .card-dest { flex-shrink: 0; width: 155px; background: #fff; border-radius: 18px; overflow: hidden; border: 1px solid #E7E0D8; box-shadow: 0 2px 10px rgba(0,0,0,0.06); cursor: pointer; }
+    .card-dest-top { position: relative; width: 100%; height: 130px; overflow: hidden; background: #E7E0D8; }
+    .card-dest-top img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .card-dest-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px 10px 6px; background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%); }
+    .card-dest-nome { font-weight: 700; font-size: 13px; color: #fff; }
+    .card-dest-cidad { font-size: 11px; color: rgba(255,255,255,0.85); margin-top: 1px; }
+    .card-dest-bottom { padding: 10px 12px; }
+    .card-dest-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .preco-dest { font-size: 13px; font-weight: 650; color: #16A34A; }
+    .servicos-txt { font-size: 11px; color: #A8A29E; }
+
+    /* ─────────────────────────────────────
+       BANNER CADASTRO EMPRESA
+    ───────────────────────────────────── */
+    .banner { margin: 11px 17px 0; background: linear-gradient(135deg, #1A6B3C, #2D9E5F); border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; }
+    .banner-txt strong { color: #fff; font-weight: 800; font-size: 14px; display: block; margin-bottom: 2px; }
+    .banner-txt span { color: rgba(255,255,255,0.78); font-size: 11px; }
+    .banner-btn { background: #F59E0B; color: #1A3A2A; border-radius: 10px; padding: 8px 14px; font-size: 12px; font-weight: 720; white-space: nowrap; border: none; }
+
+    /* ─────────────────────────────────────
+       LISTA DE EMPRESAS
+    ───────────────────────────────────── */
+    .lista { padding: 16px 16px 0; display: flex; flex-direction: column; gap: 0; }
+    .lista-title { font-weight: 800; font-size: 16px; margin-bottom: 12px; }
+    .lista-header { display: flex; align-items: center; justify-content: space-between; margin: 16px 17px 8px; }
+    .lista-title { font-size: 17px; font-weight: 700; }
+    .select-ordem { font-size: 13px; border: 1px solid #E7E5E4; border-radius: 8px; padding: 5px 8px; background: #fff; color: #1C1917; }
+    .card-empresa { background: #fff; border-radius: 18px; border: 1px solid #E7E0D8; padding: 16px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 12px; }
+    .avatar-sq { border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 27px; flex-shrink: 0; width: 52px; height: 52px; overflow: hidden; }
+    .avatar-sq img { width: 100%; height: 100%; object-fit: cover; border-radius: 0px; display: block; }
+    .empresa-info { flex: 1; min-width: 0; }
+    .empresa-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3px; }
+    .empresa-nome { font-weight: 700; font-size: 15px; }
+    .empresa-preco { font-weight: 680; font-size: 12px; color: #16A34A; flex-shrink: 0; }
+    .empresa-preco span { font-size: 11px; font-weight: 480; color: #A8A29E; }
+    .empresa-loc { font-size: 12px; color: #A8A29E; margin-bottom: 8px; display: flex; align-items: center; gap: 4px; }
+    .empresa-mid { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .empresa-rating { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; }
+    .empresa-rating span { font-size: 11px; color: #A8A29E; font-weight: 400; }
+    .status { display: flex; align-items: center; gap: 4px; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .status-txt { font-size: 11px; font-weight: 500; }
+    .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag { background: #F0EBE3; color: #78716C; border-radius: 50px; padding: 4px 11px; font-size: 10px; font-weight: 600; }
+
+    /* ─────────────────────────────────────
+       ESTADO VAZIO
+    ───────────────────────────────────── */
+    .vazio { text-align: center; padding: 48px 0; color: #A8A29E; }
+    .vazio-icon { font-size: 48px; margin-bottom: 12px; }
+    .vazio-title { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+
+    /* ─────────────────────────────────────
+       RODAPÉ DE NAVEGAÇÃO
+    ───────────────────────────────────── */
+
+    /* ─────────────────────────────────────
+       TELA DE PERFIL DA EMPRESA
+    ───────────────────────────────────── */
+    .perfil-header { background: #fff; display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid #E7E0D8; position: sticky; top: 0; z-index: 50; }
+    .back-btn { background: #F0EBE3; border: none; border-radius: 12px; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .perfil-title { font-weight: 700; font-size: 16px; }
+    .perfil-hero-top { background: #fff; padding: 28px 20px 24px; text-align: center; }
+    .perfil-avatar { border-radius: 20px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 28px; margin: 0 auto 12px; width: 110px; height: 110px; overflow: hidden; background: #E7E0D8; }
+    .perfil-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; display: block; }
+    .perfil-nome { font-weight: 800; font-size: 22px; margin-bottom: 4px; }
+    .perfil-loc { font-size: 13px; color: #78716C; display: flex; align-items: center; justify-content: center; gap: 4px; }
+    .disp-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; border-radius: 50px; padding: 6px 16px; }
+    .disp-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .disp-txt { font-size: 12px; font-weight: 600; }
+    .ver-perfil-link { display: inline-block; margin-top: 10px; font-size: 13px; font-weight: 700; color: #16A34A; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 10px 16px 16px; background: #fff; }
+    .stat-card { background: #F5F2ED; border-radius: 14px; padding: 12px 8px; text-align: center; }
+    .stat-icon { font-size: 20px; margin-bottom: 4px; }
+    .stat-val { font-weight: 800; font-size: 14px; }
+    .stat-lbl { font-size: 10px; color: #A8A29E; }
+    .perfil-body { padding: 14px 16px 100px; display: flex; flex-direction: column; gap: 12px; }
+    .info-card { background: #fff; border-radius: 16px; padding: 18px; border: 1px solid #E7E0D8; }
+    .info-card h3 { font-weight: 700; font-size: 14px; margin-bottom: 10px; }
+    .info-card p { font-size: 13px; color: #57534E; line-height: 1.7; margin: 0; }
+    .equip-row { display: flex; justify-content: space-between; }
+    .equip-lbl { font-size: 10px; color: #A8A29E; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .equip-val { font-weight: 600; font-size: 13px; }
+    .cult-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cult-tag { border-radius: 50px; padding: 5px 14px; font-size: 12px; font-weight: 600; }
+    .av-item { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid #F0EBE3; }
+    .av-item:last-child { padding-bottom: 0; margin-bottom: 0; border-bottom: none; }
+    .av-top { display: flex; justify-content: space-between; margin-bottom: 3px; }
+    .av-autor { font-weight: 600; font-size: 13px; }
+    .av-data { font-size: 11px; color: #A8A29E; }
+    .av-stars { margin-bottom: 4px; font-size: 13px; }
+    .av-txt { font-size: 13px; color: #57534E; line-height: 1.6; }
+
+    /* ─────────────────────────────────────
+       BOTÃO FIXO DE CONTATO
+    ───────────────────────────────────── */
+    .cta-fixo { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; padding: 12px 16px calc(16px + env(safe-area-inset-bottom)); background: rgba(245,242,237,0.98); backdrop-filter: blur(12px); border-top: 1px solid #E7E0D8; z-index: 99; }
+    .wpp-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; color: #fff; border: none; border-radius: 16px; padding: 17px 16px; font-size: 15px; font-weight: 700; text-align: center; text-decoration: none; }
+    .wpp-btn.disponivel { background: #16A34A; box-shadow: 0 8px 24px rgba(22,163,74,0.35); }
+    .wpp-btn.indisponivel { background: #D6D3D1; pointer-events: none; }
+
+    /* ─────────────────────────────────────
+       Borda/Rodapé-Futuro
+    ───────────────────────────────────── */
+    .pb80 { padding-bottom: 20px; }
+
+  </style>
+</head>
+<body>
+<div class="web">
+
+  <!-- ══════════════════════════════════
+       TELA HOME
+  ══════════════════════════════════ -->
+  <div 
+  id="tela-home" class="pb80">
+    <img src="layout.png" alt="SafraVoo" class="imagem-responsiva">
+    <div class="header">
+      <div class="header-top">
+      </div>
+      <div class="search-wrap">
+        <span class="search-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" 
+     stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+     <circle cx="11" cy="11" r="7"></circle>
+     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+     </svg></span>
+        <input type="text" class="search-input" id="busca" placeholder="Sua Região..." oninput="filtrar()"/>
+      </div>
+      <div class="filtros" id="filtros"></div>
+    </div>
+
+    <div class="toggle-row">
+      <button class="toggle-btn" onclick="toggleDisp()">
+        <div class="dot" id="dot-disp"></div>
+        <span id="toggle-txt">Mostrar só disponíveis</span>
+      </button>
+      <span class="count" id="count-txt"></span>
+    </div>
+
+    <div id="destaques-section">
+      <div class="section-title">Destaques</div>
+      <div class="destaques-scroll" id="destaques"></div>
+    </div>
+
+    <div class="banner">
+      <div class="banner-txt">
+        <strong>⚪️ Seja um parceiro.</strong>
+        <span>Cadastre a sua empresa e comece a receber chamados</span>
+      </div>
+      <a href="https://safravoo-cadastro.netlify.app/" target="_blank" class="banner-btn">Cadastrar</a>
+    </div>
+
+    <div class="lista">
+     <div class="lista-header">
+  <div class="lista-title" id="lista-title">Especialistas para sua lavoura:</div>
+  <select id="ordenar" onchange="filtrar()" class="select-ordem">
+    <option value="padrao">Ordenar</option>
+    <option value="avaliacao">Melhor avaliados</option>
+    <option value="preco_asc">Menor preço</option>
+    <option value="preco_desc">Maior preço</option>
+    <option value="az">A a Z</option>
+  </select>
+</div>
+      <div id="lista-empresas"></div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════
+       TELA PERFIL DO EMPRESA
+  ══════════════════════════════════ -->
+  <div id="tela-perfil" style="display:none;">
+
+    <div class="perfil-header">
+      <button class="back-btn" onclick="voltarHome()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#57534E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+      </button>
+      <span class="perfil-title">Perfil da Empresa</span>
+    </div>
+
+    <div class="perfil-hero-top" id="perfil-top"></div>
+    <div class="stats-grid" id="perfil-stats"></div>
+    <div class="perfil-body" id="perfil-body"></div>
+    <div class="cta-fixo" id="cta-fixo"></div>
+
+  </div>
+
+
+  <!--══════════════════════════════════ -->
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+<script>
+
+  // ════════════════════════════════════
+  // CONFIGURAÇÕES GERAIS
+  // ════════════════════════════════════
+  const LOC_ICON = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
+
+  // ════════════════════════════════════════════════════════
+  // CONFIGURAÇÃO — token e base ficam no Netlify (Environment variables)
+  // ════════════════════════════════════════════════════════
+  const AT_TABLE = "Empresas";
+
+  const CULTURAS = ["Todas","Café","Milho","Cana","Limão","Pastagem","Cacau","Algodão","Laranja","Feijão","Trigo","Soja"];
+
+  let EMPRESAS   = [];
+  let culturaSel = "Todas";
+  let apenasDisp = false;
+
+  // ════════════════════════════════════════════════════════
+  // CARREGAR EMPRESAS (via function do Netlify — token escondido lá)
+  // ════════════════════════════════════════════════════════
+  async function carregarEmpresas() {
+    document.getElementById("lista-empresas").innerHTML =
+      '<div class="vazio"><div class="vazio-icon">⏳</div><div class="vazio-title">Carregando...</div></div>';
+
+    try {
+      // Busca empresas via Netlify Function (token fica no servidor)
+      const res = await fetch("/.netlify/functions/empresas");
+      if (!res.ok) throw new Error("Erro " + res.status);
+      const json = await res.json();
+
+      EMPRESAS = json.empresas.map(p => ({
+        id:               p.id,
+        nome:             p.nome              || "",
+        foto:             p.foto              || "",
+        cidade:           p.cidade            || "",
+        avaliacao:        p.avaliacao         || 0,
+        avaliacoes:       p.avaliacoes        || 0,
+        preco:            p.preco             || 0,
+        drone:            p.drone             || "",
+        area_max:         p.area_max          || 0,
+        culturas:         Array.isArray(p.culturas) ? p.culturas : [],
+        disponivel:       !!p.disponivel,
+        destaque:         !!p.destaque,
+        servicos:         p.servicos          || 0,
+        bio:              p.bio               || "",
+        avaliacoes_texto: p.avaliacoes_texto  || "",
+        orcamento:        p.orcamento         || "",
+        link_perfil:      p.link_perfil       || "",
+      }));
+
+      renderDestaques();
+      filtrar();
+
+    } catch (err) {
+      console.error(err);
+      document.getElementById("lista-empresas").innerHTML =
+        '<div class="vazio"><div class="vazio-icon">⚠️</div><div class="vazio-title">Erro ao carregar</div><div>Verifique a conexão e recarregue</div></div>';
+    }
+  }
+
+  // ─────────────────────────────────────
+  // UTILITÁRIOS
+  // ─────────────────────────────────────
+  // ─────────────────────────────────────
+  // AVATAR — espaço para foto (vazio se sem URL)
+  // ─────────────────────────────────────
+  function avatarHtml(p, cssClass, style) {
+    const img = p.foto ? '<img src="' + p.foto + '" alt="' + p.nome + '">' : '';
+    return '<div class="' + cssClass + '" style="' + style + '">' + img + '</div>';
+    }
+
+  // Link de destino do botão "Solicitar um orçamento".
+  // Vem direto do campo "orcamento" da tabela Empresas no Airtable.
+  function orcamentoUrl(empresa) {
+    return (empresa && empresa.orcamento) ? empresa.orcamento : "";
+  }
+
+  function navShow(show) {
+    document.getElementById("bottom-nav").style.display = show ? "flex" : "none";
+  }
+
+  // ─────────────────────────────────────
+  // FILTROS
+  // ─────────────────────────────────────
+  function renderFiltros() {
+    document.getElementById("filtros").innerHTML = CULTURAS.map(c =>
+      '<button class="chip' + (c === culturaSel ? " ativo" : "") + '" onclick="setCultura(\'' + c + '\')">' + c + '</button>'
+    ).join("");
+  }
+
+  function setCultura(c) { culturaSel = c; renderFiltros(); filtrar(); }
+
+  function toggleDisp() {
+    apenasDisp = !apenasDisp;
+    document.getElementById("dot-disp").className     = "dot" + (apenasDisp ? " ativo" : "");
+    document.getElementById("toggle-txt").textContent = apenasDisp ? "Mostrando disponíveis" : "Mostrar só disponíveis";
+    filtrar();
+  }
+
+  // ─────────────────────────────────────
+  // LISTA DE EMPRESAS
+  // ─────────────────────────────────────
+  function filtrar() {
+    const busca = document.getElementById("busca").value.toLowerCase();
+    const filtrados = EMPRESAS.filter(p => {
+      const okC = culturaSel === "Todas" || p.culturas.includes(culturaSel);
+      const okB = p.nome.toLowerCase().includes(busca) || p.cidade.toLowerCase().includes(busca);
+      return okC && okB && (!apenasDisp || p.disponivel);
+    });
+
+    document.getElementById("count-txt").textContent   = filtrados.length + " empresas";
+    document.getElementById("lista-title").textContent = culturaSel === "Todas" ? "Especialistas para sua lavoura:" : "Empresas para " + culturaSel;
+    document.getElementById("destaques-section").style.display = (culturaSel === "Todas" && !busca) ? "" : "none";
+    const ordem = document.getElementById("ordenar").value;
+    if (ordem === "avaliacao") filtrados.sort((a,b) => b.avaliacao - a.avaliacao);
+    else if (ordem === "preco_asc") filtrados.sort((a,b) => a.preco - b.preco);
+    else if (ordem === "preco_desc") filtrados.sort((a,b) => b.preco - a.preco);
+    else if (ordem === "az") filtrados.sort((a,b) => a.nome.localeCompare(b.nome)); 
+    const lista = document.getElementById("lista-empresas");
+    if (!filtrados.length) {
+      lista.innerHTML = '<div class="vazio"><div class="vazio-icon">🔍</div><div class="vazio-title">Nenhum resultado</div><div>Tente outros filtros ou região</div></div>';
+      return;
+    }
+    lista.innerHTML = filtrados.map(p =>
+      '<div class="card-empresa" onclick="abrirPerfil(\'' + p.id + '\')">' +
+        avatarHtml(p, "avatar-sq", "") +
+        '<div class="empresa-info">' +
+          '<div class="empresa-top"><div class="empresa-nome">' + p.nome + '</div><div class="empresa-preco">A partir de R$ ' + p.preco + '<span>/ha</span></div></div>' +
+          '<div class="empresa-loc">' + LOC_ICON + ' ' + p.cidade + ' ' + '</div>' +
+          '<div class="empresa-mid">' +
+            '<div class="empresa-rating">⭐ ' + p.avaliacao + ' <span>(' + p.avaliacoes + ') · ' + p.drone.split(" ")[1] + '</span></div>' +
+            '<div class="status"><div class="status-dot" style="background:' + (p.disponivel ? "#16A34A" : "#D6D3D1") + '"></div>' +
+            '<span class="status-txt" style="color:' + (p.disponivel ? "#16A34A" : "#A8A29E") + '">' + (p.disponivel ? "Disponível" : "Indisponível") + '</span></div>' +
+          '</div>' +
+          '<div class="tags">' + p.culturas.slice(0,3).map(c => '<span class="tag">' + c + '</span>').join("") + (p.culturas.length > 3 ? '<span class="tag">+' + (p.culturas.length-3) + '</span>' : '') + '</div>' +
+        '</div>' +
+      '</div>'
+    ).join("");
+  }
+  
+
+  // ─────────────────────────────────────
+  // DESTAQUES
+  // ─────────────────────────────────────
+  function renderDestaques() {
+    document.getElementById("destaques").innerHTML = EMPRESAS
+      .filter(p => p.destaque && p.disponivel)
+      .map(p =>
+        '<div class="card-dest" onclick="abrirPerfil(\'' + p.id + '\')">' +
+          '<div class="card-dest-top">' +
+            (p.foto ? '<img src="' + p.foto + '" alt="' + p.nome + '">' : '') +
+            '<div class="card-dest-overlay">' +
+              '<div class="card-dest-nome">' + p.nome.split(" ")[0] + '</div>' +
+              '<div class="card-dest-cidad">' + p.cidade + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="card-dest-bottom">' +
+            '<div class="card-dest-row"><span>⭐ ' + p.avaliacao + '</span><span class="preco-dest">A partir de R$' + p.preco + '/ha</span></div>' +
+            '<div class="servicos-txt">' + p.servicos + ' serviços</div>' +
+          '</div>' +
+        '</div>'
+      ).join("");
+  }
+
+  // ─────────────────────────────────────
+  // PERFIL DO EMPRESA
+  // ─────────────────────────────────────
+  function abrirPerfil(id) {
+    const p = EMPRESAS.find(x => x.id === id || x.id == id);
+    document.getElementById("tela-home").style.display   = "none";
+    document.getElementById("tela-perfil").style.display = "";
+    navShow(false);
+    window.scrollTo(0, 0);
+
+    document.getElementById("perfil-top").innerHTML =
+      avatarHtml(p, "perfil-avatar", "") +
+      '<div class="perfil-nome">' + p.nome + '</div>' +
+      '<div class="perfil-loc">' + LOC_ICON + ' ' + p.cidade + ' ' + '</div>' +
+      '<div class="disp-badge" style="background:' + (p.disponivel ? "#DCFCE7" : "#FEE2E2") + '">' +
+        '<div class="disp-dot" style="background:' + (p.disponivel ? "#16A34A" : "#DC2626") + '"></div>' +
+        '<span class="disp-txt" style="color:' + (p.disponivel ? "#16A34A" : "#DC2626") + '">' + (p.disponivel ? "Disponível agora" : "Indisponível") + '</span>' +
+      '</div>' +
+      (p.link_perfil ? '<div><a class="ver-perfil-link" href="' + p.link_perfil + '" target="_blank" rel="noopener">Ver perfil completo 》</a></div>' : '');
+
+    document.getElementById("perfil-stats").innerHTML =
+      [["⭐", p.avaliacao, "Avaliação"], ["✅", p.servicos, "Serviços"], ["💰", "A partir de R$" + p.preco + "/ha", "Preço"]].map(([ic, vl, lb]) =>
+        '<div class="stat-card"><div class="stat-icon">' + ic + '</div><div class="stat-val">' + vl + '</div><div class="stat-lbl">' + lb + '</div></div>'
+      ).join("");
+
+    const avsHtml = p.avaliacoes_texto
+      ? '<div class="info-card"><h3>Avaliações (' + p.avaliacoes + ')</h3><p style="white-space:pre-line">' + p.avaliacoes_texto + '</p></div>'
+      : '';
+
+    document.getElementById("perfil-body").innerHTML =
+      '<div class="info-card"><h3>Sobre</h3><p>' + p.bio + '</p></div>' +
+      '<div class="info-card"><h3>Equipamento</h3><div class="equip-row">' +
+        '<div><div class="equip-lbl">Drone</div><div class="equip-val">' + p.drone + '</div></div>' +
+        '<div><div class="equip-lbl">Área máx/dia</div><div class="equip-val">' + p.area_max + ' ha</div></div>' +
+      '</div></div>' +
+      '<div class="info-card"><h3>Culturas atendidas</h3><div class="cult-tags">' +
+        p.culturas.map(c => '<span class="cult-tag" style="background:#16A34A18;color:#16A34A">' + c + '</span>').join("") +
+      '</div></div>' +
+      avsHtml;
+
+    document.getElementById("cta-fixo").innerHTML = (p.disponivel && orcamentoUrl(p))
+      ? '<a href="' + orcamentoUrl(p) + '" target="_blank" rel="noopener" class="wpp-btn disponivel">Solicitar um orçamento</a>'
+      : p.disponivel
+        ? '<div class="wpp-btn indisponivel">Orçamento indisponível no momento</div>'
+        : '<div class="wpp-btn indisponivel">Indisponível no momento</div>';
+  }
+
+  // ─────────────────────────────────────
+  // VOLTAR PARA HOME
+  // ─────────────────────────────────────
+  function voltarHome() {
+    document.getElementById("tela-perfil").style.display = "none";
+    document.getElementById("tela-home").style.display   = "";
+    navShow(true);
+    window.scrollTo(0, 0);
+  }
+  
+  // ─────────────────────────────────────
+  // INICIALIZAÇÃO
+  // ─────────────────────────────────────
+  // Filtros não dependem do Airtable — renderiza imediatamente
+  renderFiltros();
+  carregarEmpresas();
+
+</script>
+</body>
+</html>
