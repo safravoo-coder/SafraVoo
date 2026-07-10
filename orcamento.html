@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solicitar orçamento | SafraVoo</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  :root{
+    --cor-primaria: #3A7A52;
+    --cor-primaria-hover: #2D6140;
+    --cor-whatsapp: #25D366;
+    --cor-accent: #F59E0B;
+    --bg-pagina: #F7F6F3;
+    --bg-card: #FFFFFF;
+    --texto-principal: #1C1917;
+    --texto-secundario: #78716C;
+    --texto-suave: #9C9690;
+    --borda: #E2DDD7;
+    --erro: #E05A5A;
+    --capa-altura: clamp(200px, 46vw, 320px);
+    --capa-posicao: center 35%;
+    --raio-borda: 14px;
+  }
+  *{ box-sizing: border-box; }
+  body{ margin: 0; font-family: system-ui, -apple-system, sans-serif; background: #CFCBC5; color: var(--texto-principal); }
+  a{ text-decoration: none; color: inherit; }
+  .container{ max-width: 520px; margin: 0 auto; background: var(--bg-pagina); min-height: 100vh; }
+
+  /* CAPA */
+  .capa-wrap{ position: relative; height: var(--capa-altura); overflow: hidden; }
+  .capa-img{ width: 100%; height: 100%; object-fit: cover; object-position: var(--capa-posicao); display: block; background: #DEDAD5; }
+  .capa-overlay{ position: absolute; inset: 0; background: linear-gradient(to top, rgba(28,25,23,0.85) 0%, rgba(28,25,23,0.15) 55%, transparent 100%); }
+  .capa-selo{ position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.92); backdrop-filter: blur(6px); padding: 6px 12px; border-radius: 50px; font-size: 10.5px; font-weight: 700; color: var(--texto-principal); display: flex; align-items: center; gap: 5px; }
+  .capa-conteudo{ position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 20px; }
+  .capa-nome{ font-size: clamp(22px, 6.5vw, 30px); font-weight: 900; color: #fff; letter-spacing: -0.3px; margin-bottom: 4px; }
+  .capa-tagline{ font-size: clamp(12px, 3.4vw, 14px); color: rgba(255,255,255,0.85); }
+
+  /* FORM */
+  .form-card{ background: var(--bg-card); border-radius: var(--raio-borda); border: 1px solid var(--borda); padding: 22px 18px 26px; margin: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .form-titulo{ font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+  .form-sub{ font-size: 13px; color: var(--texto-secundario); margin-bottom: 20px; line-height: 1.5; }
+
+  .campo{ margin-bottom: 16px; }
+  .campo label{ display: block; font-size: 11px; font-weight: 700; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .campo label .obrig{ color: var(--erro); margin-left: 2px; }
+  .campo input, .campo textarea{ width: 100%; border: 1.5px solid var(--borda); border-radius: 10px; padding: 12px 14px; font-size: 14px; font-family: inherit; color: var(--texto-principal); background: #F5F3F0; outline: none; transition: border-color 0.2s; }
+  .campo input:focus, .campo textarea:focus{ border-color: var(--cor-primaria); background: #fff; }
+  .campo textarea{ resize: vertical; min-height: 70px; }
+  .campo-unidade{ display: flex; align-items: center; gap: 10px; }
+  .campo-unidade input{ flex: 1; }
+  .campo-unidade span{ font-size: 13px; color: var(--texto-secundario); white-space: nowrap; }
+  .check-wpp{ display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--texto-secundario); margin-top: 8px; cursor: pointer; }
+  .check-wpp input{ accent-color: var(--cor-primaria); cursor: pointer; width: 16px; height: 16px; flex-shrink: 0; }
+  .char-count{ font-size: 10px; color: var(--texto-suave); text-align: right; margin-top: 4px; }
+  .char-count.limite{ color: var(--erro); }
+
+  /* SERVIÇOS */
+  .servicos-lista{ display: flex; flex-direction: column; gap: 10px; }
+  .servico-grupo{ border: 1px solid var(--borda); border-radius: 10px; background: #F5F3F0; padding: 12px 14px; }
+  .servico-check{ display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; color: var(--texto-principal); cursor: pointer; }
+  .servico-check input{ width: 18px; height: 18px; accent-color: var(--cor-primaria); cursor: pointer; flex-shrink: 0; }
+  .culturas-lista{ margin-top: 0; padding-top: 0; border-top: none; padding-left: 28px; display: none; flex-wrap: wrap; gap: 7px; }
+  .culturas-lista.aberta{ display: flex; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--borda); }
+  .cultura-chip{ display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--texto-secundario); background: #fff; border: 1px solid var(--borda); border-radius: 50px; padding: 5px 12px; cursor: pointer; }
+  .cultura-chip input{ accent-color: var(--cor-primaria); cursor: pointer; width: 14px; height: 14px; }
+  .outro-campo{ display: none; margin-top: 10px; padding-left: 28px; }
+  .outro-campo.aberto{ display: block; }
+  .outro-campo textarea{ width: 100%; border: 1.5px solid var(--borda); border-radius: 10px; padding: 10px 12px; font-size: 13px; font-family: inherit; background: #fff; outline: none; resize: vertical; min-height: 60px; }
+  .servicos-erro{ font-size: 11.5px; color: var(--erro); margin-top: 6px; display: none; }
+
+  .btn-enviar{ width: 100%; background: var(--cor-primaria); color: #fff; border: none; border-radius: 10px; padding: 15px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 6px; transition: background 0.18s; }
+  .btn-enviar:hover{ background: var(--cor-primaria-hover); }
+  .btn-enviar:disabled{ opacity: 0.7; cursor: not-allowed; }
+
+  .msg-status{ border-radius: 10px; padding: 12px 14px; font-size: 13px; margin-top: 14px; display: none; }
+  .msg-status.sucesso{ display: block; background: #E4EDE8; color: #2D6140; border: 1px solid #BFE0CC; }
+  .msg-status.erro{ display: block; background: #FBEAEA; color: #B23B3B; border: 1px solid #F2C6C6; }
+
+  /* WHATSAPP FLUTUANTE */
+  .wpp-flutuante{ position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; border-radius: 50%; background: var(--cor-whatsapp); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(0,0,0,0.25); z-index: 60; color: #fff; transition: transform 0.15s; }
+  .wpp-flutuante:hover{ transform: scale(1.06); }
+
+  /* RODAPÉ */
+  .rodape{ text-align: center; padding: 4px 20px 100px; }
+  .rodape-link{ font-size: 12px; color: var(--texto-secundario); text-decoration: underline; display: inline-block; margin-bottom: 10px; }
+  .rodape-logo{ font-size: 13px; font-weight: 800; color: var(--texto-suave); }
+  .rodape-logo span{ color: var(--cor-accent); }
+
+  :focus-visible{ outline: 2px solid var(--cor-primaria); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div id="estadoCarregando" style="padding:60px 20px;text-align:center;color:#9C9690;font-size:14px;">Carregando...</div>
+
+  <div id="estadoErro" style="display:none;padding:60px 20px;text-align:center;color:#78716C;font-size:14px;">
+    <div style="font-size:32px;margin-bottom:10px;">🚜</div>
+    Não encontramos essa página. Confira se o link está correto.
+  </div>
+
+  <div id="conteudoPrincipal" style="display:none;">
+
+    <div class="capa-wrap">
+      <img class="capa-img" id="capaImg" src="" alt="Foto de capa">
+      <div class="capa-overlay"></div>
+      <div class="capa-selo">✅ Via SafraVoo</div>
+      <div class="capa-conteudo">
+        <div class="capa-nome" id="capaNome"></div>
+        <div class="capa-tagline">Solicite seu orçamento de maneira facilitada</div>
+      </div>
+    </div>
+
+    <form class="form-card" id="formOrcamento" novalidate>
+      <div class="form-titulo">Solicitar orçamento</div>
+      <div class="form-sub">Preencha os dados abaixo. Entraremos em contato para conversar melhor sobre o serviço.</div>
+
+      <div class="campo">
+        <label for="nome">Seu nome<span class="obrig">*</span></label>
+        <input type="text" id="nome" placeholder="Ex.: João Silva" required>
+      </div>
+
+      <div class="campo">
+        <label for="email">E-mail<span class="obrig">*</span></label>
+        <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
+      </div>
+
+      <div class="campo">
+        <label for="telefone">Telefone<span class="obrig">*</span></label>
+        <input type="tel" id="telefone" placeholder="(00) 00000-0000" inputmode="numeric" required>
+        <label class="check-wpp">
+          <input type="checkbox" id="telefoneWpp">
+          Esse número também é WhatsApp
+        </label>
+      </div>
+
+      <div class="campo">
+        <label for="regiao">Região<span class="obrig">*</span></label>
+        <input type="text" id="regiao" placeholder="Ex.: Fazenda a +/- 100 km de Vitória da Conquista, BA" required>
+      </div>
+
+      <div class="campo">
+        <label>Tipo de serviço<span class="obrig">*</span></label>
+        <div class="servicos-lista" id="servicosLista"></div>
+        <div class="servicos-erro" id="servicosErro">Selecione ao menos um serviço.</div>
+      </div>
+
+      <div class="campo">
+        <label for="area">Área aproximada<span class="obrig">*</span></label>
+        <div class="campo-unidade">
+          <input type="number" id="area" placeholder="Ex.: 12" min="0" step="0.1" required>
+          <span>hectares</span>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="data">Data desejada<span class="obrig">*</span></label>
+        <input type="text" id="data" placeholder="__/__/____" inputmode="numeric" maxlength="10" required>
+      </div>
+
+      <div class="campo">
+        <label for="obs">Observação</label>
+        <textarea id="obs" maxlength="300" placeholder="Informações adicionais sobre o serviço..."></textarea>
+        <div class="char-count" id="obsContador">0/300</div>
+      </div>
+
+      <button type="submit" class="btn-enviar">Enviar pedido de orçamento</button>
+      <div class="msg-status" id="msgStatus"></div>
+    </form>
+
+    <div class="rodape">
+      <a class="rodape-link" id="rodapeLink" href="https://safravoo.com.br">Conheça o perfil completo no SafraVoo</a>
+      <div class="rodape-logo">Safra<span>Voo</span></div>
+    </div>
+
+    <a class="wpp-flutuante" id="wppFlutuante" href="#" target="_blank" rel="noopener" aria-label="Conversar no WhatsApp">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.84.5 3.56 1.36 5.05L2 22l5.25-1.38c1.43.78 3.06 1.22 4.79 1.22 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm5.81 14.07c-.24.68-1.41 1.32-1.94 1.4-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.79-4.16-4.93-4.35-.14-.19-1.18-1.57-1.18-2.99 0-1.42.74-2.11 1-2.4.26-.29.57-.36.76-.36s.38 0 .55.01c.18.01.41-.07.64.49.24.58.81 2 .88 2.15.07.15.12.33.02.52-.1.19-.15.31-.29.48-.14.17-.3.38-.43.51-.14.14-.29.29-.13.57.16.28.73 1.2 1.57 1.95 1.08.96 2 1.26 2.28 1.4.28.14.45.12.62-.06.17-.18.71-.83.9-1.11.19-.28.39-.23.65-.14.27.1 1.69.8 1.98.95.29.14.48.21.55.33.08.12.08.68-.16 1.36z"/></svg>
+    </a>
+
+  </div>
+</div>
+
+<script>
+  emailjs.init("1oTBRdUEMv_tlHVv6");
+
+  // Lê o slug da URL: safravoo.com.br/orcamento/pulveriza-drones → "pulveriza-drones"
+  function getSlug() {
+    const partes = window.location.pathname.split("/").filter(Boolean);
+    // partes[0] = "orcamento", partes[1] = slug
+    return partes[1] || partes[0] || "";
+  }
+
+  // Monta os checkboxes de serviço
+  function montarServicos(culturas) {
+    const lista = document.getElementById("servicosLista");
+    lista.innerHTML = "";
+
+    // Serviço 1: Pulverização agrícola (com sub-culturas)
+    const grupoPulv = document.createElement("div");
+    grupoPulv.className = "servico-grupo";
+    grupoPulv.innerHTML = `
+      <label class="servico-check">
+        <input type="checkbox" name="servico" value="Pulverização agrícola" data-tipo="pulverizacao">
+        Pulverização agrícola
+      </label>
+      <div class="culturas-lista" id="culturas-pulverizacao">
+        ${culturas.map(c => `
+          <label class="cultura-chip">
+            <input type="checkbox" name="cultura" value="${c}"> ${c}
+          </label>
+        `).join("")}
+      </div>
+    `;
+    lista.appendChild(grupoPulv);
+
+    // Serviço 2: Outro (com campo de texto livre)
+    const grupoOutro = document.createElement("div");
+    grupoOutro.className = "servico-grupo";
+    grupoOutro.innerHTML = `
+      <label class="servico-check">
+        <input type="checkbox" name="servico" value="Outro" data-tipo="outro">
+        Outro
+      </label>
+      <div class="outro-campo" id="campo-outro">
+        <textarea id="outroDescricao" placeholder="Descreva o tipo de serviço desejado..."></textarea>
+      </div>
+    `;
+    lista.appendChild(grupoOutro);
+
+    // Mostrar/esconder sub-opções
+    lista.addEventListener("change", (e) => {
+      if (e.target.name === "servico") {
+        const tipo = e.target.dataset.tipo;
+        if (tipo === "pulverizacao") {
+          document.getElementById("culturas-pulverizacao").classList.toggle("aberta", e.target.checked);
+        } else if (tipo === "outro") {
+          document.getElementById("campo-outro").classList.toggle("aberto", e.target.checked);
+        }
+      }
+    });
+  }
+
+  // Máscara de telefone
+  document.getElementById("telefone").addEventListener("input", (e) => {
+    let v = e.target.value.replace(/\D/g, "").slice(0, 11);
+    if (v.length > 10) v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7,11)}`;
+    else if (v.length > 6) v = `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
+    else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+    e.target.value = v;
+  });
+
+  // Máscara de data
+  document.getElementById("data").addEventListener("input", (e) => {
+    let v = e.target.value.replace(/\D/g, "").slice(0, 8);
+    if (v.length > 4) v = `${v.slice(0,2)}/${v.slice(2,4)}/${v.slice(4)}`;
+    else if (v.length > 2) v = `${v.slice(0,2)}/${v.slice(2)}`;
+    e.target.value = v;
+  });
+
+  // Contador de caracteres
+  const obsEl = document.getElementById("obs");
+  const obsContador = document.getElementById("obsContador");
+  obsEl.addEventListener("input", () => {
+    const n = obsEl.value.length;
+    obsContador.textContent = `${n}/300`;
+    obsContador.classList.toggle("limite", n >= 270);
+  });
+
+  // Envio do formulário
+  document.getElementById("formOrcamento").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const msgEl = document.getElementById("msgStatus");
+    const servicosMarcados = [...document.querySelectorAll('input[name="servico"]:checked')];
+    const servicosErroEl = document.getElementById("servicosErro");
+
+    servicosErroEl.style.display = servicosMarcados.length === 0 ? "block" : "none";
+    if (!e.target.checkValidity() || servicosMarcados.length === 0) {
+      msgEl.textContent = "Verifique os campos obrigatórios antes de enviar.";
+      msgEl.className = "msg-status erro";
+      return;
+    }
+
+    // Monta texto de serviços
+    const servicosTexto = servicosMarcados.map(s => {
+      if (s.dataset.tipo === "pulverizacao") {
+        const culturas = [...document.querySelectorAll('input[name="cultura"]:checked')].map(c => c.value);
+        return culturas.length ? `Pulverização agrícola (${culturas.join(", ")})` : "Pulverização agrícola";
+      }
+      if (s.dataset.tipo === "outro") {
+        const desc = document.getElementById("outroDescricao").value.trim();
+        return desc ? `Outro: ${desc}` : "Outro";
+      }
+      return s.value;
+    }).join(" | ");
+
+    const botao = e.target.querySelector(".btn-enviar");
+    botao.disabled = true;
+    botao.textContent = "Enviando...";
+
+    const lead = {
+      slug_empresa:       getSlug(),
+      nome:               document.getElementById("nome").value,
+      email:              document.getElementById("email").value,
+      telefone:           document.getElementById("telefone").value,
+      telefone_whatsapp:  document.getElementById("telefoneWpp").checked,
+      regiao:             document.getElementById("regiao").value,
+      servicos_solicitados: servicosTexto,
+      area_ha:            Number(document.getElementById("area").value),
+      data_desejada:      document.getElementById("data").value,
+      observacoes:        obsEl.value
+    };
+
+    try {
+      const resp = await fetch("/.netlify/functions/orcamento", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(lead)
+      });
+      if (!resp.ok) throw new Error("Erro " + resp.status);
+
+      msgEl.textContent = "Pedido enviado! A empresa vai entrar em contato em breve.";
+      msgEl.className = "msg-status sucesso";
+
+      // Envia email via EmailJS
+      emailjs.send("service_xmuq6kl", "template_93cuy4k", {
+        to_email:     window._emailDestino || "",
+        nome:         lead.nome,
+        telefone:     lead.telefone,
+        email:        lead.email,
+        regiao:       lead.regiao,
+        servicos:     lead.servicos_solicitados,
+        area_ha:      lead.area_ha,
+        data_desejada: lead.data_desejada,
+        observacoes:  lead.observacoes
+      });
+
+      e.target.reset();
+      document.querySelectorAll(".culturas-lista").forEach(el => el.classList.remove("aberta"));
+      document.querySelectorAll(".outro-campo").forEach(el => el.classList.remove("aberto"));
+      obsContador.textContent = "0/300";
+
+    } catch (erro) {
+      msgEl.textContent = "Erro ao enviar. Tente novamente.";
+      msgEl.className = "msg-status erro";
+    } finally {
+      botao.disabled = false;
+      botao.textContent = "Enviar pedido de orçamento";
+    }
+  });
+
+  // Inicialização
+  async function init() {
+    const slug = getSlug();
+    const elCarregando = document.getElementById("estadoCarregando");
+    const elErro = document.getElementById("estadoErro");
+    const elConteudo = document.getElementById("conteudoPrincipal");
+
+    try {
+      if (!slug) throw new Error("Sem slug");
+
+      const resp = await fetch("/.netlify/functions/orcamento?slug=" + slug);
+      if (!resp.ok) throw new Error("Empresa não encontrada");
+      const dados = await resp.json();
+
+      if (!dados.empresa) throw new Error("Empresa não encontrada");
+
+      // Guarda email destino para o EmailJS
+      window._emailDestino = dados.empresa.email_destino || "";
+
+      // Renderiza
+      document.getElementById("capaImg").src = dados.empresa.foto || "";
+      document.getElementById("capaNome").textContent = dados.empresa.nome || "";
+      document.title = (dados.empresa.nome || "Orçamento") + " | SafraVoo";
+
+      document.getElementById("wppFlutuante").href =
+        "https://wa.me/" + (dados.empresa.whatsapp || "") +
+        "?text=" + encodeURIComponent("Olá! Vim pela SafraVoo e gostaria de solicitar um orçamento.");
+
+      montarServicos(dados.empresa.culturas || []);
+
+      elCarregando.style.display = "none";
+      elConteudo.style.display = "block";
+
+    } catch (erro) {
+      elCarregando.style.display = "none";
+      elErro.style.display = "block";
+      console.error(erro);
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
