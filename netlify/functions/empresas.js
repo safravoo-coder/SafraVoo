@@ -14,6 +14,14 @@ const AT_TABLE = "Empresas";
 const POR_PAGINA = 8;
 
 exports.handler = async function (event) {
+  if (!AT_TOKEN || !AT_BASE) {
+    return {
+      statusCode: 500,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ erro: "Configuração do serviço indisponível" })
+    };
+  }
+
   try {
     const params      = event.queryStringParameters || {};
     const cultura      = params.cultura || "Todas";
