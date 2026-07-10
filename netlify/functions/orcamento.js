@@ -1,5 +1,5 @@
 const AT_TOKEN = process.env.AIRTABLE_TOKEN;
-const AT_BASE  = "app4M5Gxhhk8rst29";
+const AT_BASE  = process.env.AIRTABLE_BASE;
 const TABELA_EMPRESAS = "Empresas";
 const TABELA_LEADS    = "tbl7TFz6wVyGOSxNo";
 
@@ -9,6 +9,13 @@ const HEADERS = {
 };
 
 exports.handler = async function(event) {
+  if (!AT_TOKEN || !AT_BASE) {
+    return {
+      statusCode: 500,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ erro: "Configuração do serviço indisponível" })
+    };
+  }
 
   // ── GET: busca dados da empresa pelo slug ──────────────────────────────
   if (event.httpMethod === "GET") {
