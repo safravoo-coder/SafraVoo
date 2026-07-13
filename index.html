@@ -13,6 +13,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="theme-color" content="#16A34A"/>
   <title>SafraVoo — A melhor solução para a sua lavoura🌱</title>
+  
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  
   <style>
 
     /* ─────────────────────────────────────
@@ -29,29 +33,25 @@
     ───────────────────────────────────── */
      .header { background: #fff; padding: 16px 10px 0; border-bottom: 1px solid #E7E0D8; position: sticky; top: 0; z-index: 50; }
      .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 01px; }
-     .container-imagem {
-            width: 100%;           /* ou um valor fixo: 800px, 50%, etc */
-            max-width: 800px;      /* limita tam. Máx. */
-            margin: 20px auto;     /* centraliza */
-            padding: 10px;
-            border: 1px solid #ddd; /* opcional: só para ver o espaço */
-        }
      .imagem-responsiva {
-            width: 100%;           /*ocupa toda largura do container*/
-            height: auto;          /* mantém a proporção */
-            display: block;        /* remove espaços indesejados embaixo */
-            border-radius: 01px;    /* opcional: cantos arredondados */
-        }
-     .location { font-size: 11px; color: #A8A29E; margin-bottom: 2px; display: flex; align-items: center; gap: 4px; }
-     .logo-text { font-weight: 900; font-size: 24px; letter-spacing: -0.5px; line-height: 1; }
-     .logo-text span { color: #16A34A; }
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 01px;
+             }
      
     /* ─────────────────────────────────────
        BUSCA E FILTROS
     ───────────────────────────────────── */
-    .search-wrap { position: relative; margin-bottom: 12px; }
+    .search-wrap { position: relative; margin-bottom: 9px; }
     .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 15px; }
     .search-input { width: 100%; border: 1.5px solid #E7E0D8; border-radius: 8px; padding: 9px 16px 11px 34px; font-size: 14px; outline: none; background: #F5F2ED; color: #1C1917; }
+     .filtros-title{
+      margin: 2px 0 10px;
+      padding: 0 2px;
+      font-size: 14px;
+      font-weight: 650;
+      color:#57534E;}
     .filtros { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 14px; scrollbar-width: none; }
     .chip { flex-shrink: 0; border: none; border-radius: 6px; padding: 6px 16px; font-size: 12px; font-weight: 650; background: #F0EBE3; color: #78716C; transition: all 0.15s; }
     .chip.ativo { background: #16A34A; color: #fff; }
@@ -68,7 +68,7 @@
     /* ─────────────────────────────────────
        DESTAQUES
     ───────────────────────────────────── */
-    .section-title { font-weight: 680; font-size: 20px; padding: 4px 12px 17px; color:#78716C; }
+    .section-title { font-weight: 650; font-size: 19px; padding: 4px 12px 17px; color:#57534E; }
     .destaques-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 0 11px 7px; scrollbar-width: none; }
     .card-dest { flex-shrink: 0; width: 53vw; max-width: 160px; background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #E7E0D8; box-shadow: 0 1px 1px rgba(0,0,0,0.06); cursor: pointer; }
     .card-dest-top { width: 100%; height: 77px; overflow: hidden; background: #E7E0D8; }
@@ -92,9 +92,15 @@
     .servicos-txt { font-size: 11px; color: #A8A29E; }
 
     /* ─────────────────────────────────────
+       BANNER CONFIANÇA (PRODUTOR)
+    ───────────────────────────────────── */
+    .banner-trust { margin: 16px 16px 0; border-radius: 14px; overflow: hidden; line-height: 0; }
+    .banner-trust img { width: 100%; height: auto; display: block; }
+
+    /* ─────────────────────────────────────
        BANNER CADASTRO EMPRESA
     ───────────────────────────────────── */
-    .banner { margin: 17px 6px 0; background: linear-gradient(135deg, #1A6B3C, #2D9E5F); border-radius: 12px; padding: 9px 12px; display: flex; align-items: center; justify-content: space-between; }
+    .banner { margin: 20px 16px 0; background: linear-gradient(135deg, #1A6B3C, #2D9E5F); border-radius: 12px; padding: 9px 12px; display: flex; align-items: center; justify-content: space-between; }
     .banner-txt strong { color: #fff; font-weight: 800; font-size: 14px; display: block; margin-bottom: 1px; }
     .banner-txt span { color: rgba(255,255,255,0.58); font-size: 10px; }
     .banner-btn { background: #F59E0B; color: #1A3A2A; border-radius: 9px; padding: 8px 12px; font-size: 12px; font-weight: 620; white-space: nowrap; border: none; }
@@ -133,14 +139,10 @@
     .vazio-title { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
 
     /* ─────────────────────────────────────
-       RODAPÉ DE NAVEGAÇÃO
-    ───────────────────────────────────── */
-
-    /* ─────────────────────────────────────
        TELA DE PERFIL DA EMPRESA
     ───────────────────────────────────── */
     .perfil-header { background: #fff; display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid #E7E0D8; position: sticky; top: 0; z-index: 50; }
-    .back-btn { background: #F0EBE3; border: none; border-radius: 12px; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .back-btn { background: #F0EBE3; border: none; border-radius: 12px; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; }
     .perfil-title { font-weight: 700; font-size: 16px; }
     .perfil-hero-top { background: #fff; padding: 24px 20px 20px; text-align: center; }
     .perfil-avatar { border-radius: 7px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 28px; margin: 0 auto 12px; width: 200px; height: 90px; overflow: hidden; background: #E7E0D8; }
@@ -185,8 +187,52 @@
     .btn-unico { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #D6D3D1; color: #fff; border: none; border-radius: 16px; padding: 17px 16px; font-size: 15px; font-weight: 700; }
 
     /* ─────────────────────────────────────
-       Borda/Rodapé-Futuro
+       TELA DE ORÇAMENTO (NOVA)
     ───────────────────────────────────── */
+    .capa-wrap { position: relative; height: clamp(200px, 46vw, 320px); overflow: hidden; }
+    .capa-img { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; display: block; background: #DEDAD5; }
+    .capa-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(28,25,23,0.85) 0%, rgba(28,25,23,0.15) 55%, transparent 100%); }
+    .capa-conteudo { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 20px; }
+    .capa-nome { font-size: clamp(22px, 6.5vw, 30px); font-weight: 900; color: #fff; letter-spacing: -0.3px; margin-bottom: 4px; }
+    .capa-tagline { font-size: clamp(12px, 3.4vw, 14px); color: rgba(255,255,255,0.85); }
+
+    .form-card { background: #fff; border-radius: 14px; border: 1px solid #E7E0D8; padding: 22px 18px 26px; margin: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .form-titulo { font-size: 18px; font-weight: 800; margin-bottom: 4px; }
+    .form-sub { font-size: 13px; color: #78716C; margin-bottom: 20px; line-height: 1.5; }
+
+    .campo { margin-bottom: 16px; }
+    .campo label { display: block; font-size: 11px; font-weight: 700; color: #9C9690; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .campo label .obrig { color: #E05A5A; margin-left: 2px; }
+    .campo input, .campo textarea { width: 100%; border: 1.5px solid #E7E0D8; border-radius: 10px; padding: 12px 14px; font-size: 14px; font-family: inherit; color: #1C1917; background: #F5F3F0; outline: none; transition: border-color 0.2s; }
+    .campo input:focus, .campo textarea:focus { border-color: #16A34A; background: #fff; }
+    .campo textarea { resize: vertical; min-height: 70px; }
+    .check-wpp { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #78716C; margin-top: 8px; cursor: pointer; }
+    .check-wpp input { accent-color: #16A34A; cursor: pointer; width: 16px; height: 16px; flex-shrink: 0; }
+    .char-count { font-size: 10px; color: #9C9690; text-align: right; margin-top: 4px; }
+    .char-count.limite { color: #E05A5A; }
+
+    .servicos-lista { display: flex; flex-direction: column; gap: 10px; }
+    .servico-grupo { border: 1px solid #E7E0D8; border-radius: 10px; background: #F5F3F0; padding: 12px 14px; }
+    .servico-check { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; color: #1C1917; cursor: pointer; }
+    .servico-check input { width: 18px; height: 18px; accent-color: #16A34A; cursor: pointer; flex-shrink: 0; }
+    .culturas-lista { margin-top: 0; padding-top: 0; border-top: none; padding-left: 28px; display: none; flex-wrap: wrap; gap: 7px; }
+    .culturas-lista.aberta { display: flex; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #E7E0D8; }
+    .cultura-chip { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: #78716C; background: #fff; border: 1px solid #E7E0D8; border-radius: 50px; padding: 5px 12px; cursor: pointer; }
+    .cultura-chip input { accent-color: #16A34A; cursor: pointer; width: 14px; height: 14px; }
+    .servicos-erro { font-size: 11.5px; color: #E05A5A; margin-top: 6px; display: none; }
+
+    .btn-enviar { width: 100%; background: #16A34A; color: #fff; border: none; border-radius: 10px; padding: 15px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 6px; transition: background 0.18s; }
+    .btn-enviar:hover { background: #15803D; }
+    .btn-enviar:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    .msg-status { border-radius: 10px; padding: 12px 14px; font-size: 13px; margin-top: 14px; display: none; }
+    .msg-status.sucesso { display: block; background: #E4EDE8; color: #2D6140; border: 1px solid #BFE0CC; }
+    .msg-status.erro { display: block; background: #FBEAEA; color: #B23B3B; border: 1px solid #F2C6C6; }
+
+    .rodape { text-align: center; padding: 4px 20px 20px; }
+    .rodape-logo { font-size: 13px; font-weight: 800; color: #78716C; }
+    .rodape-logo span { color: #F59E0B; }
+
     .pb80 { padding-bottom: 20px; }
 
   </style>
@@ -197,8 +243,7 @@
   <!-- ══════════════════════════════════
        TELA HOME
   ══════════════════════════════════ -->
-  <div 
-  id="tela-home" class="pb80">
+  <div id="tela-home" class="pb80">
     <img src="layout.png" alt="SafraVoo" class="imagem-responsiva">
     <div class="header">
       <div class="header-top">
@@ -209,8 +254,9 @@
      <circle cx="11" cy="11" r="7"></circle>
      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
      </svg></span>
-        <input type="text" class="search-input" id="busca" placeholder="Sua Região..." oninput="filtrar()"/>
+        <input type="text" class="search-input" id="busca" placeholder="Cidade/Região..." oninput="filtrar()"/>
       </div>
+      <h3 class="filtros-title">Selecione a cultura</h3>
       <div class="filtros" id="filtros"></div>
     </div>
 
@@ -227,12 +273,8 @@
       <div class="destaques-scroll" id="destaques"></div>
     </div>
 
-    <div class="banner">
-      <div class="banner-txt">
-        <strong>⚪️ Seja um parceiro.</strong>
-        <span>Cadastre a sua empresa de drones e comece a receber chamados</span>
-      </div>
-      <a href="https://safravoo-cadastro.netlify.app/" target="_blank" class="banner-btn">Cadastrar</a>
+    <div class="banner-trust">
+      <img src="banner-produtor.png" alt="Profissionais verificados. Equipamentos certificados.">
     </div>
 
     <div class="lista">
@@ -247,10 +289,18 @@
       <div id="lista-empresas"></div>
     </div>
 
+    <div class="banner">
+      <div class="banner-txt">
+        <strong>⚪️ Seja um parceiro.</strong>
+        <span>Cadastre a sua empresa de drones e comece a receber chamados</span>
+      </div>
+      <a href="https://safravoo-cadastro.netlify.app/" target="_blank" class="banner-btn">Cadastrar</a>
+    </div>
+
   </div>
 
   <!-- ══════════════════════════════════
-       TELA PERFIL DO EMPRESA
+       TELA PERFIL DA EMPRESA
   ══════════════════════════════════ -->
   <div id="tela-perfil" style="display:none;">
 
@@ -270,61 +320,151 @@
 
   </div>
 
+  <!-- ══════════════════════════════════
+       TELA ORÇAMENTO (NOVA)
+  ══════════════════════════════════ -->
+  <div id="tela-orcamento" style="display:none;">
+
+    <div class="perfil-header">
+      <button class="back-btn" onclick="voltarPerfil()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#57534E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+      </button>
+      <span class="perfil-title">Solicitar Orçamento</span>
+    </div>
+
+    <!-- CAPA -->
+    <div class="capa-wrap">
+      <img class="capa-img" id="orcamento-capa" src="" alt="Foto da empresa">
+      <div class="capa-overlay"></div>
+      <div class="capa-conteudo">
+        <div class="capa-nome" id="orcamento-nome">Carregando...</div>
+        <div class="capa-tagline" id="orcamento-tagline">Preencha os dados abaixo e receba uma proposta personalizada</div>
+      </div>
+    </div>
+
+    <!-- FORMULÁRIO -->
+    <form class="form-card" id="formOrcamento">
+      <div class="form-titulo">Solicitar orçamento</div>
+      <div class="form-sub">Preencha os dados abaixo. A empresa vai entrar em contato em breve.</div>
+
+      <div class="campo">
+        <label>Nome completo <span class="obrig">*</span></label>
+        <input type="text" id="nome" placeholder="Seu nome completo" required>
+      </div>
+
+      <div class="campo">
+        <label>E-mail <span class="obrig">*</span></label>
+        <input type="email" id="email" placeholder="seuemail@exemplo.com" required>
+      </div>
+
+      <div class="campo">
+        <label>Telefone <span class="obrig">*</span></label>
+        <input type="tel" id="telefone" placeholder="(00) 00000-0000" required>
+        <label class="check-wpp">
+          <input type="checkbox" id="telefoneWpp">
+          Esse número também é WhatsApp
+        </label>
+      </div>
+
+      <div class="campo">
+        <label>Cidade/Região <span class="obrig">*</span></label>
+        <input type="text" id="cidade" placeholder="Ex: Vitória da Conquista, BA" required>
+      </div>
+
+      <div class="campo">
+        <label>Serviços desejados <span class="obrig">*</span></label>
+        <div id="servicos-lista"></div>
+        <div class="servicos-erro" id="servicosErro">Selecione ao menos um serviço</div>
+      </div>
+
+      <div class="campo">
+        <label>Área aproximada (hectares) <span class="obrig">*</span></label>
+        <input type="number" id="area" placeholder="Ex: 12" min="0" step="0.1" required>
+      </div>
+
+      <div class="campo">
+        <label>Data desejada <span class="obrig">*</span></label>
+        <input type="text" id="data" placeholder="__/__/__" inputmode="numeric" maxlength="8" required>
+      </div>
+
+      <div class="campo">
+        <label>Observações</label>
+        <textarea id="obs" maxlength="200" placeholder="Detalhes adicionais sobre o serviço..."></textarea>
+        <div class="char-count" id="obsContador">0/200</div>
+      </div>
+
+      <button type="submit" class="btn-enviar" id="btn-enviar-orcamento">
+        Enviar orçamento
+      </button>
+
+      <div class="msg-status" id="msgStatus"></div>
+    </form>
+
+    <div class="rodape">
+      <div class="rodape-logo">Safra<span>Voo</span></div>
+    </div>
+
+  </div>
 
   <!--══════════════════════════════════ -->
   <nav class="bottom-nav" id="bottom-nav"></nav>
-<script>
 
+<script>
   // ════════════════════════════════════
   // CONFIGURAÇÕES GERAIS
   // ════════════════════════════════════
   const LOC_ICON = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
 
-  // ════════════════════════════════════════════════════════
-  // CONFIGURAÇÃO — token e base ficam no Netlify (Environment variables)
-  // ════════════════════════════════════════════════════════
-  const AT_TABLE = "Empresas";
-
   const CULTURAS = ["Todas","Café","Milho","Cana","Limão","Pastagem","Cacau","Algodão","Laranja","Feijão","Trigo","Soja"];
+
+  // ════════════════════════════════════
+  // CONFIGURAÇÕES DO EMAILJS
+  // ════════════════════════════════════
+  const EMAILJS_PUBLIC_KEY = "i75q5l_s4AV-Ht7ce";
+  const EMAILJS_SERVICE_ID = "service_xmuq6kl";
+  const EMAILJS_TEMPLATE_ID = "template_93cuy4k";
 
   let EMPRESAS   = [];
   let culturaSel = "Todas";
   let apenasDisp = false;
+  let slugAtual  = '';
 
-  // ════════════════════════════════════════════════════════
-  // CARREGAR EMPRESAS (via function do Netlify — token escondido lá)
-  // ════════════════════════════════════════════════════════
+  // ════════════════════════════════════
+  // CARREGAR EMPRESAS (VIA NETLIFY FUNCTION)
+  // ════════════════════════════════════
   async function carregarEmpresas() {
     document.getElementById("lista-empresas").innerHTML =
       '<div class="vazio"><div class="vazio-icon">⏳</div><div class="vazio-title">Carregando...</div></div>';
 
     try {
-
       // Busca empresas via Netlify Function (token fica no servidor)
       const res = await fetch("/.netlify/functions/empresas");
       if (!res.ok) throw new Error("Erro " + res.status);
       const json = await res.json();
 
       EMPRESAS = json.empresas.map(p => ({
-        id:               p.id,
-        nome:             p.nome              || "",
-        foto:             p.foto              || "",
-        cidade:           p.cidade            || "",
-        avaliacao:        p.avaliacao         || 0,
-        avaliacoes:       p.avaliacoes        || 0,
-        preco:            p.preco             || 0,
-        drone:            p.drone             || "",
-        area_max:         p.area_max          || 0,
-        culturas:         Array.isArray(p.culturas) ? p.culturas : [],
-        disponivel:       !!p.disponivel,
-        destaque:         !!p.destaque,
-        servicos:         p.servicos          || 0,
-        bio:              p.bio               || "",
-        avaliacoes_texto: p.avaliacoes_texto  || "",
-        orcamento:        p.orcamento         || "",
-        link_perfil:      p.link_perfil       || "",
-        experiencia:      p.experiencia       || 0,
-        whatsapp:         p.whatsapp          || "",
+        id: p.id,
+        slug: p.slug || "",
+        nome: p.nome || "",
+        foto: p.foto || "",
+        cidade: p.cidade || "",
+        avaliacao: p.avaliacao || 0,
+        avaliacoes: p.avaliacoes || 0,
+        drone: p.drone || "",
+        culturas: Array.isArray(p.culturas) ? p.culturas : [],
+        disponivel: !!p.disponivel,
+        destaque: !!p.destaque,
+        servicos: p.servicos || 0,
+        bio: p.bio || "",
+        orcamento: p.orcamento || "",
+        experiencia: p.experiencia || 0,
+        whatsapp: p.whatsapp || "",
+        email: p.email || "",
+        servicos_lista: p.servicos_lista || "",
+        culturas_lista: p.culturas_lista || "",
+        link_perfil: p.link_perfil || ""
       }));
 
       renderDestaques();
@@ -337,30 +477,48 @@
     }
   }
 
-  // ─────────────────────────────────────
-  // UTILITÁRIOS
-  // ─────────────────────────────────────
-  // ─────────────────────────────────────
-  // AVATAR — espaço para foto (vazio se sem URL)
-  // ─────────────────────────────────────
-  function avatarHtml(p, cssClass, style) {
-    const img = p.foto ? '<img src="' + p.foto + '" alt="' + p.nome + '">' : '';
-    return '<div class="' + cssClass + '" style="' + style + '">' + img + '</div>';
+  // ════════════════════════════════════
+  // NAVEGAÇÃO (URLS BONITAS)
+  // ════════════════════════════════════
+  function navegarPara(tela, slug = null) {
+    document.querySelectorAll('#tela-home, #tela-perfil, #tela-orcamento').forEach(el => {
+      el.style.display = 'none';
+    });
+
+    if (tela === 'home') {
+      document.getElementById('tela-home').style.display = '';
+      window.history.pushState({ tela: 'home' }, '', '/');
+      slugAtual = '';
+    } else if (tela === 'perfil' && slug) {
+      document.getElementById('tela-perfil').style.display = '';
+      window.history.pushState({ tela: 'perfil', slug }, '', `/perfil/${slug}`);
+      slugAtual = slug;
+      carregarPerfil(slug);
+    } else if (tela === 'orcamento' && slug) {
+      document.getElementById('tela-orcamento').style.display = '';
+      window.history.pushState({ tela: 'orcamento', slug }, '', `/orcamento/${slug}`);
+      slugAtual = slug;
+      carregarOrcamento(slug);
     }
 
-  // Link de destino do botão "Solicitar um orçamento".
-  // Vem direto do campo "orcamento" da tabela Empresas no Airtable.
-  function orcamentoUrl(empresa) {
-    return (empresa && empresa.orcamento) ? empresa.orcamento : "";
+    window.scrollTo(0, 0);
   }
 
-  function navShow(show) {
-    document.getElementById("bottom-nav").style.display = show ? "flex" : "none";
+  function voltarHome() {
+    navegarPara('home');
   }
 
-  // ─────────────────────────────────────
+  function voltarPerfil() {
+    if (slugAtual) {
+      navegarPara('perfil', slugAtual);
+    } else {
+      navegarPara('home');
+    }
+  }
+
+  // ════════════════════════════════════
   // FILTROS
-  // ─────────────────────────────────────
+  // ════════════════════════════════════
   function renderFiltros() {
     document.getElementById("filtros").innerHTML = CULTURAS.map(c =>
       '<button class="chip' + (c === culturaSel ? " ativo" : "") + '" onclick="setCultura(\'' + c + '\')">' + c + '</button>'
@@ -371,14 +529,19 @@
 
   function toggleDisp() {
     apenasDisp = !apenasDisp;
-    document.getElementById("dot-disp").className     = "dot" + (apenasDisp ? " ativo" : "");
+    document.getElementById("dot-disp").className = "dot" + (apenasDisp ? " ativo" : "");
     document.getElementById("toggle-txt").textContent = apenasDisp ? "Mostrando disponíveis" : "Mostrar só disponíveis";
     filtrar();
   }
 
-  // ─────────────────────────────────────
+  function avatarHtml(p, cssClass, style) {
+    const img = p.foto ? '<img src="' + p.foto + '" alt="' + p.nome + '">' : '';
+    return '<div class="' + cssClass + '" style="' + style + '">' + img + '</div>';
+  }
+
+  // ════════════════════════════════════
   // LISTA DE EMPRESAS
-  // ─────────────────────────────────────
+  // ════════════════════════════════════
   function filtrar() {
     const busca = document.getElementById("busca").value.toLowerCase();
     const filtrados = EMPRESAS.filter(p => {
@@ -387,23 +550,25 @@
       return okC && okB && (!apenasDisp || p.disponivel);
     });
 
-    document.getElementById("count-txt").textContent   = filtrados.length + " empresas";
+    document.getElementById("count-txt").textContent = filtrados.length + " empresas";
     document.getElementById("lista-title").textContent = culturaSel === "Todas" ? "Especialistas para sua lavoura:" : "Empresas para " + culturaSel;
     document.getElementById("destaques-section").style.display = (culturaSel === "Todas" && !busca) ? "" : "none";
+
     const ordem = document.getElementById("ordenar").value;
     if (ordem === "avaliacao") filtrados.sort((a,b) => b.avaliacao - a.avaliacao);
-    else if (ordem === "az") filtrados.sort((a,b) => a.nome.localeCompare(b.nome)); 
+    else if (ordem === "az") filtrados.sort((a,b) => a.nome.localeCompare(b.nome));
+
     const lista = document.getElementById("lista-empresas");
     if (!filtrados.length) {
       lista.innerHTML = '<div class="vazio"><div class="vazio-icon">🔍</div><div class="vazio-title">Nenhum resultado</div><div>Tente outros filtros ou região</div></div>';
       return;
     }
     lista.innerHTML = filtrados.map(p =>
-      '<div class="card-empresa" onclick="abrirPerfil(\'' + p.id + '\')">' +
+      '<div class="card-empresa" onclick="abrirPerfil(\'' + p.slug + '\')">' +
         avatarHtml(p, "avatar-sq", "") +
         '<div class="empresa-info">' +
           '<div class="empresa-top"><div class="empresa-nome">' + p.nome + '</div></div>' +
-          '<div class="empresa-loc">' + LOC_ICON + ' ' + p.cidade + ' ' + '</div>' +
+          '<div class="empresa-loc">' + LOC_ICON + ' ' + p.cidade + '</div>' +
           '<div class="empresa-mid">' +
             '<div class="empresa-rating">⭐ ' + p.avaliacao + ' <span>(' + p.avaliacoes + ') · ' + p.drone.split(" ")[1] + '</span></div>' +
             '<div class="status"><div class="status-dot" style="background:' + (p.disponivel ? "#16A34A" : "#D6D3D1") + '"></div>' +
@@ -414,44 +579,20 @@
       '</div>'
     ).join("");
   }
-  
 
-  const SVG_DRONE = `<svg xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.8"
-    stroke-linecap="round"
-    stroke-linejoin="round">
-    <path d="M3.5 5.5h4"/>
-    <path d="M16.5 5.5h4"/>
-    <path d="M5.5 5.5v2"/>
-    <path d="M18.5 5.5v2"/>
-    <path d="M5.5 7.5h4"/>
-    <path d="M14.5 7.5h4"/>
-    <path d="M9.5 7.5l1.8 2.5"/>
-    <path d="M14.5 7.5L12.7 10"/>
-    <rect x="9" y="10" width="6" height="4" rx="1.6"/>
-    <rect x="10.5" y="8" width="3" height="1.3" rx=".4"/>
-    <path d="M10 14l-1 3"/>
-    <path d="M14 14l1 3"/>
-    <path d="M8.7 17h2"/>
-    <path d="M13.3 17h2"/>
-    <path d="M5.5 9.2v2"/>
-    <path d="M18.5 9.2v2"/>
-    <path d="M4.8 12.2l-.5 1"/>
-    <path d="M5.5 12.2v1.6"/>
-    <path d="M6.2 12.2l.5 1"/>
-    <path d="M17.8 12.2l-.5 1"/>
-    <path d="M18.5 12.2v1.6"/>
-    <path d="M19.2 12.2l.5 1"/>
-    </svg>`;
+  // ════════════════════════════════════
+  // SVGs
+  // ════════════════════════════════════
+  const SVG_DRONE = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5h4"/><path d="M16.5 5.5h4"/><path d="M5.5 5.5v2"/><path d="M18.5 5.5v2"/><path d="M5.5 7.5h4"/><path d="M14.5 7.5h4"/><path d="M9.5 7.5l1.8 2.5"/><path d="M14.5 7.5L12.7 10"/><rect x="9" y="10" width="6" height="4" rx="1.6"/><rect x="10.5" y="8" width="3" height="1.3" rx=".4"/><path d="M10 14l-1 3"/><path d="M14 14l1 3"/><path d="M8.7 17h2"/><path d="M13.3 17h2"/><path d="M5.5 9.2v2"/><path d="M18.5 9.2v2"/><path d="M4.8 12.2l-.5 1"/><path d="M5.5 12.2v1.6"/><path d="M6.2 12.2l.5 1"/><path d="M17.8 12.2l-.5 1"/><path d="M18.5 12.2v1.6"/><path d="M19.2 12.2l.5 1"/></svg>`;
   const SVG_SHIELD = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>`;
   const SVG_STAR_FULL = `<svg width="12" height="12" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
   const SVG_STAR_HALF = `<svg width="12" height="12" viewBox="0 0 24 24"><defs><linearGradient id="half"><stop offset="50%" stop-color="#F59E0B"/><stop offset="50%" stop-color="#E5E7EB"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#half)" stroke="#F59E0B" stroke-width="1"/></svg>`;
   const SVG_STAR_EMPTY = `<svg width="12" height="12" viewBox="0 0 24 24" fill="#E5E7EB" stroke="#E5E7EB" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+  const SVG_STAR_STAT = `<svg width="26" height="26" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+  const SVG_CLIPBOARD = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h4"/></svg>`;
+  const SVG_SHIELD_STAT = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>`;
+  const SVG_WPP = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>`;
+  const SVG_ORC = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`;
 
   function starsHtml(nota) {
     let html = '';
@@ -463,11 +604,14 @@
     return html;
   }
 
+  // ════════════════════════════════════
+  // DESTAQUES
+  // ════════════════════════════════════
   function renderDestaques() {
     document.getElementById("destaques").innerHTML = EMPRESAS
       .filter(p => p.destaque && p.disponivel)
       .map(p =>
-        '<div class="card-dest" onclick="abrirPerfil(\'' + p.id + '\')">' +
+        '<div class="card-dest" onclick="abrirPerfil(\'' + p.slug + '\')">' +
           '<div class="card-dest-top">' +
             (p.foto ? '<img src="' + p.foto + '" alt="' + p.nome + '">' : '') +
           '</div>' +
@@ -489,18 +633,18 @@
       ).join("");
   }
 
-  const SVG_STAR_STAT = `<svg width="26" height="26" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
-  const SVG_CLIPBOARD = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h4"/></svg>`;
-  const SVG_SHIELD_STAT = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>`;
-  const SVG_WPP = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>`;
-  const SVG_ORC = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`;
+  // ════════════════════════════════════
+  // PERFIL
+  // ════════════════════════════════════
+  function abrirPerfil(slug) {
+    const p = EMPRESAS.find(x => x.slug === slug);
+    if (!p) return;
+    navegarPara('perfil', p.slug);
+  }
 
-  function abrirPerfil(id) {
-    const p = EMPRESAS.find(x => x.id === id || x.id == id);
-    document.getElementById("tela-home").style.display   = "none";
-    document.getElementById("tela-perfil").style.display = "";
-    navShow(false);
-    window.scrollTo(0, 0);
+  function carregarPerfil(slug) {
+    const p = EMPRESAS.find(x => x.slug === slug);
+    if (!p) return;
 
     document.getElementById("perfil-top").innerHTML =
       avatarHtml(p, "perfil-avatar", "") +
@@ -540,44 +684,261 @@
       '<div class="info-card"><h3>Sobre</h3><p>' + p.bio + '</p></div>' +
       '<div class="info-card"><h3>Equipamento</h3><div class="equip-row">' +
         '<div><div class="equip-lbl">Drone</div><div class="equip-val">' + p.drone + '</div></div>' +
-        '<div><div class="equip-lbl">Área máx/dia</div><div class="equip-val">' + p.area_max + ' ha</div></div>' +
+        '<div><div class="equip-lbl">Área máx/dia</div><div class="equip-val">' + (p.area_max || '—') + ' ha</div></div>' +
       '</div></div>' +
       '<div class="info-card"><h3>Culturas atendidas</h3><div class="cult-tags">' +
         p.culturas.map(c => '<span class="cult-tag" style="background:#16A34A18;color:#16A34A">' + c + '</span>').join("") +
       '</div></div>' +
       avsHtml;
 
-    const temOrc = p.disponivel && orcamentoUrl(p);
     const temWpp = p.disponivel && p.whatsapp;
 
     if (!p.disponivel) {
       document.getElementById("cta-fixo").innerHTML =
         '<div class="btn-unico">Indisponível no momento</div>';
     } else {
+      // Se tiver orcamento preenchido, usa ele, senão usa a página interna
+      const urlOrcamento = p.orcamento || `/orcamento/${p.slug}`;
       document.getElementById("cta-fixo").innerHTML =
         '<div class="cta-btns">' +
-          (temOrc ? '<a href="' + orcamentoUrl(p) + '" target="_blank" rel="noopener" class="btn-orc">' + SVG_ORC + 'Solicitar orçamento</a>' : '') +
+          '<a href="' + urlOrcamento + '" class="btn-orc">' + SVG_ORC + 'Solicitar orçamento</a>' +
           (temWpp ? '<a href="https://wa.me/' + p.whatsapp + '" target="_blank" rel="noopener" class="btn-wpp">' + SVG_WPP + 'WhatsApp</a>' : '') +
         '</div>';
     }
   }
 
-  // ─────────────────────────────────────
-  // VOLTAR PARA HOME
-  // ─────────────────────────────────────
-  function voltarHome() {
-    document.getElementById("tela-perfil").style.display = "none";
-    document.getElementById("tela-home").style.display   = "";
-    navShow(true);
-    window.scrollTo(0, 0);
+  // ════════════════════════════════════
+  // ORÇAMENTO
+  // ════════════════════════════════════
+  function abrirOrcamento(slug) {
+    const p = EMPRESAS.find(x => x.slug === slug);
+    if (!p) return;
+    navegarPara('orcamento', p.slug);
   }
-  
-  // ─────────────────────────────────────
-  // INICIALIZAÇÃO
-  // ─────────────────────────────────────
-  // Filtros não dependem do Airtable — renderiza imediatamente
-  renderFiltros();
-  carregarEmpresas();
+
+  function carregarOrcamento(slug) {
+    const p = EMPRESAS.find(x => x.slug === slug);
+    if (!p) return;
+
+    // Capa
+    document.getElementById('orcamento-capa').src = p.foto || '';
+    document.getElementById('orcamento-nome').textContent = p.nome || 'Empresa';
+    document.getElementById('orcamento-tagline').textContent = 'Preencha os dados abaixo e receba uma proposta personalizada';
+
+    // Serviços
+    const servicosLista = document.getElementById('servicos-lista');
+    const servicos = p.servicos_lista ? p.servicos_lista.split('\n').filter(s => s.trim()) : [];
+    const culturas = p.culturas_lista ? p.culturas_lista.split('\n').filter(c => c.trim()) : [];
+
+    if (servicos.length === 0) {
+      servicosLista.innerHTML = '<p style="color:#78716C;font-size:13px;">Nenhum serviço cadastrado</p>';
+      return;
+    }
+
+    servicosLista.innerHTML = servicos.map((servico, i) => `
+      <div class="servico-grupo">
+        <label class="servico-check">
+          <input type="checkbox" name="servico" value="${servico}" data-idx="${i}">
+          ${servico}
+        </label>
+        ${culturas.length > 0 ? `
+          <div class="culturas-lista" id="culturas-${i}">
+            ${culturas.map(c => `
+              <label class="cultura-chip">
+                <input type="checkbox" name="cultura-${i}" value="${c}">
+                ${c}
+              </label>
+            `).join('')}
+          </div>
+        ` : ''}
+      </div>
+    `).join('');
+
+    servicosLista.querySelectorAll('input[name="servico"]').forEach(el => {
+      el.addEventListener('change', (e) => {
+        const idx = e.target.dataset.idx;
+        const culturasEl = document.getElementById(`culturas-${idx}`);
+        if (culturasEl) {
+          culturasEl.classList.toggle('aberta', e.target.checked);
+        }
+      });
+    });
+
+    document.getElementById('servicosErro').style.display = 'none';
+  }
+
+  // ════════════════════════════════════
+  // MÁSCARAS
+  // ════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('telefone').addEventListener('input', function(e) {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+      let out = v;
+      if (v.length > 10) out = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7,11)}`;
+      else if (v.length > 6) out = `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
+      else if (v.length > 2) out = `(${v.slice(0,2)}) ${v.slice(2)}`;
+      e.target.value = out;
+    });
+
+    document.getElementById('data').addEventListener('input', function(e) {
+      let v = e.target.value.replace(/\D/g, '').slice(0, 6);
+      let out = v;
+      if (v.length > 4) out = `${v.slice(0,2)}/${v.slice(2,4)}/${v.slice(4)}`;
+      else if (v.length > 2) out = `${v.slice(0,2)}/${v.slice(2)}`;
+      e.target.value = out;
+    });
+
+    document.getElementById('obs').addEventListener('input', function(e) {
+      const n = e.target.value.length;
+      const contador = document.getElementById('obsContador');
+      contador.textContent = `${n}/200`;
+      contador.classList.toggle('limite', n >= 180);
+    });
+  });
+
+  // ════════════════════════════════════
+  // ENVIO DO FORMULÁRIO
+  // ════════════════════════════════════
+  document.addEventListener('DOMContentLoaded', function() {
+    // Inicializa EmailJS
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    document.getElementById('formOrcamento').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const msgEl = document.getElementById('msgStatus');
+      const botao = document.getElementById('btn-enviar-orcamento');
+      const servicosSelecionados = [...document.querySelectorAll('input[name="servico"]:checked')];
+      const servicosErroEl = document.getElementById('servicosErro');
+
+      if (servicosSelecionados.length === 0) {
+        servicosErroEl.style.display = 'block';
+        return;
+      }
+      servicosErroEl.style.display = 'none';
+
+      const dataInput = document.getElementById('data').value;
+      const dataValida = /^\d{2}\/\d{2}\/\d{2}$/.test(dataInput);
+      if (!dataValida) {
+        msgEl.textContent = '❌ Data inválida. Use o formato DD/MM/AA';
+        msgEl.className = 'msg-status erro';
+        return;
+      }
+
+      const servicosTexto = servicosSelecionados.map(s => {
+        const idx = s.dataset.idx;
+        const culturas = [...document.querySelectorAll(`input[name="cultura-${idx}"]:checked`)].map(c => c.value);
+        return culturas.length ? `${s.value} (${culturas.join(', ')})` : s.value;
+      });
+
+      // Busca a empresa atual
+      const empresa = EMPRESAS.find(p => p.slug === slugAtual);
+      if (!empresa) {
+        msgEl.textContent = '❌ Erro: empresa não encontrada';
+        msgEl.className = 'msg-status erro';
+        return;
+      }
+
+      const lead = {
+        nome: document.getElementById('nome').value,
+        email: document.getElementById('email').value,
+        telefone: document.getElementById('telefone').value,
+        região: document.getElementById('cidade').value,
+        serviços: servicosTexto.join(', '),
+        area_ha: Number(document.getElementById('area').value),
+        data_desejada: dataInput,
+        observacoes: document.getElementById('obs').value
+      };
+
+      try {
+        botao.disabled = true;
+        botao.textContent = 'Enviando...';
+
+        // Envia email via EmailJS
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email: empresa.email,
+          nome: lead.nome,
+          email: lead.email,
+          telefone: lead.telefone,
+          região: lead.região,
+          serviços: lead.serviços,
+          area_ha: lead.area_ha,
+          data_desejada: lead.data_desejada,
+          observacoes: lead.observacoes
+        });
+
+        msgEl.textContent = '✅ Orçamento enviado com sucesso! A empresa vai entrar em contato em breve.';
+        msgEl.className = 'msg-status sucesso';
+
+        this.reset();
+        document.querySelectorAll('.culturas-lista').forEach(el => el.classList.remove('aberta'));
+        document.getElementById('obsContador').textContent = '0/200';
+
+      } catch (erro) {
+        msgEl.textContent = '❌ Erro ao enviar: ' + erro.message;
+        msgEl.className = 'msg-status erro';
+        console.error(erro);
+      } finally {
+        botao.disabled = false;
+        botao.textContent = 'Enviar orçamento';
+      }
+    });
+  });
+
+  // ════════════════════════════════════
+  // INICIALIZAÇÃO COM URLS
+  // ════════════════════════════════════
+  window.addEventListener('DOMContentLoaded', function() {
+    const path = window.location.pathname;
+
+    renderFiltros();
+
+    if (path.startsWith('/orcamento/')) {
+      const slug = path.split('/')[2];
+      carregarEmpresas().then(() => {
+        const empresa = EMPRESAS.find(p => p.slug === slug);
+        if (empresa) {
+          navegarPara('orcamento', slug);
+        } else {
+          navegarPara('home');
+        }
+      });
+    } else if (path.startsWith('/perfil/')) {
+      const slug = path.split('/')[2];
+      carregarEmpresas().then(() => {
+        const empresa = EMPRESAS.find(p => p.slug === slug);
+        if (empresa) {
+          navegarPara('perfil', slug);
+        } else {
+          navegarPara('home');
+        }
+      });
+    } else {
+      carregarEmpresas();
+    }
+  });
+
+  // Botão voltar do navegador
+  window.addEventListener('popstate', function(event) {
+    if (event.state?.tela === 'perfil' && event.state?.slug) {
+      carregarPerfil(event.state.slug);
+      document.getElementById('tela-home').style.display = 'none';
+      document.getElementById('tela-perfil').style.display = '';
+      document.getElementById('tela-orcamento').style.display = 'none';
+      slugAtual = event.state.slug;
+    } else if (event.state?.tela === 'orcamento' && event.state?.slug) {
+      carregarOrcamento(event.state.slug);
+      document.getElementById('tela-home').style.display = 'none';
+      document.getElementById('tela-perfil').style.display = 'none';
+      document.getElementById('tela-orcamento').style.display = '';
+      slugAtual = event.state.slug;
+    } else {
+      document.getElementById('tela-home').style.display = '';
+      document.getElementById('tela-perfil').style.display = 'none';
+      document.getElementById('tela-orcamento').style.display = 'none';
+      slugAtual = '';
+    }
+  });
 
 </script>
 </body>
