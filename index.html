@@ -64,16 +64,16 @@
     .banner { margin: 20px 16px 0; background: linear-gradient(135deg, #1A6B3C, #2D9E5F); border-radius: 12px; padding: 9px 12px; display: flex; align-items: center; justify-content: space-between; }
     .banner-txt strong { color: #fff; font-weight: 800; font-size: 14px; display: block; margin-bottom: 1px; }
     .banner-txt span { color: rgba(255,255,255,0.58); font-size: 10px; }
-    .banner-btn { background: #F59E0B; color: #1A3A2A; border-radius: 9px; padding: 8px 12px; font-size: 12px; font-weight: 620; white-space: nowrap; border: none; }
+    .banner-btn { background: #F59E0B; color: #1A3A2A; border-radius: 9px; padding: 8px 12px; font-size: 12px; font-weight: 620; white-space: nowrap; border: none; cursor: pointer; }
 
-    .lista { padding: 16px 16px 0; display: flex; flex-direction: column; gap: 0; }
+    .lista { padding: 16px 16px 0; }
     .lista-header { display: flex; align-items: center; justify-content: space-between; margin: 16px 17px 8px; }
     .lista-title { font-size: 20px; font-weight: 700; }
     .select-ordem { font-size: 14px; border: 1px solid #E7E5E4; border-radius: 8px; padding: 5px 3px; background: #fff; color: #1C1917; }
 
     .card-empresa { background: #fff; border-radius: 18px; border: 1px solid #E7E0D8; padding: 16px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 12px; }
     .avatar-sq { border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 27px; flex-shrink: 0; width: 52px; height: 52px; overflow: hidden; }
-    .avatar-sq img { width: 100%; height: 100%; object-fit: cover; border-radius: 0; display: block; }
+    .avatar-sq img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .empresa-info { flex: 1; min-width: 0; }
     .empresa-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3px; }
     .empresa-nome { font-weight: 700; font-size: 15px; }
@@ -104,7 +104,7 @@
     .disp-badge { display: inline-flex; align-items: center; gap: 6px; border-radius: 50px; padding: 6px 14px; }
     .disp-dot { width: 6px; height: 6px; border-radius: 50%; }
     .disp-txt { font-size: 12px; font-weight: 600; }
-    .ver-perfil-btn { display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid #16A34A; border-radius: 50px; padding: 6px 14px; font-size: 12px; font-weight: 600; color: #16A34A; text-decoration: none; background: #fff; }
+    .ver-perfil-btn { display: inline-flex; align-items: center; gap: 6px; border: 1.5px solid #16A34A; border-radius: 50px; padding: 6px 14px; font-size: 12px; font-weight: 600; color: #16A34A; background: #fff; }
 
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 10px 16px 16px; background: #fff; }
     .stat-card { background: #F5F2ED; border-radius: 14px; padding: 12px 8px; text-align: center; }
@@ -125,7 +125,7 @@
 
     .cta-fixo { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; padding: 12px 16px calc(16px + env(safe-area-inset-bottom)); background: rgba(245,242,237,0.98); backdrop-filter: blur(12px); border-top: 1px solid #E7E0D8; z-index: 99; }
     .cta-btns { display: flex; gap: 10px; }
-    .btn-orc { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; background: #16A34A; color: #fff; border: none; border-radius: 16px; padding: 15px 10px; font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 20px rgba(22,163,74,0.3); }
+    .btn-orc { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; background: #16A34A; color: #fff; border: none; border-radius: 16px; padding: 15px 10px; font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 20px rgba(22,163,74,0.3); cursor: pointer; }
     .btn-wpp { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; background: #fff; color: #16A34A; border: 1.5px solid #16A34A; border-radius: 16px; padding: 15px 10px; font-size: 14px; font-weight: 700; text-decoration: none; }
     .btn-unico { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #D6D3D1; color: #fff; border: none; border-radius: 16px; padding: 17px 16px; font-size: 15px; font-weight: 700; }
 
@@ -147,7 +147,7 @@
     .campo input:focus, .campo textarea:focus { border-color: #16A34A; background: #fff; }
     .campo textarea { resize: vertical; min-height: 70px; }
     .check-wpp { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #78716C; margin-top: 8px; cursor: pointer; }
-    .check-wpp input { accent-color: #16A34A; cursor: pointer; width: 16px; height: 16px; flex-shrink: 0; }
+    .check-wpp input { accent-color: #16A34A; width: 16px; height: 16px; flex-shrink: 0; }
     .char-count { font-size: 10px; color: #9C9690; text-align: right; margin-top: 4px; }
     .char-count.limite { color: #E05A5A; }
 
@@ -176,15 +176,20 @@
   </style>
 </head>
 <body>
+
 <div class="web">
 
-  <!-- HOME -->
+  <!-- TELA HOME -->
   <div id="tela-home" class="pb80">
     <img src="layout.png" alt="SafraVoo" class="imagem-responsiva">
     <div class="header">
-      <div class="header-top"></div>
+      <div class="header-top">
+        <div class="logo-text">Safra<span>Voo</span></div>
+      </div>
       <div class="search-wrap">
-        <span class="search-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <span class="search-icon">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#777" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </span>
         <input type="text" class="search-input" id="busca" placeholder="Cidade/Região..." oninput="filtrar()"/>
       </div>
       <h3 class="filtros-title">Selecione a cultura</h3>
@@ -229,11 +234,11 @@
     </div>
   </div>
 
-  <!-- PERFIL -->
+  <!-- TELA PERFIL -->
   <div id="tela-perfil" style="display:none;">
     <div class="perfil-header">
       <button class="back-btn" onclick="voltarHome()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#57534E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#57534E" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
       </button>
       <span class="perfil-title">Perfil da Empresa</span>
     </div>
@@ -243,11 +248,11 @@
     <div class="cta-fixo" id="cta-fixo"></div>
   </div>
 
-  <!-- ORÇAMENTO -->
+  <!-- TELA ORÇAMENTO -->
   <div id="tela-orcamento" style="display:none;">
     <div class="perfil-header">
       <button class="back-btn" onclick="voltarPerfil()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#57534E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#57534E" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
       </button>
       <span class="perfil-title">Solicitar Orçamento</span>
     </div>
@@ -279,8 +284,7 @@
         <label>Telefone <span class="obrig">*</span></label>
         <input type="tel" id="telefone" placeholder="(00) 00000-0000" required>
         <label class="check-wpp">
-          <input type="checkbox" id="telefoneWpp">
-          Esse número também é WhatsApp
+          <input type="checkbox" id="telefoneWpp"> Esse número também é WhatsApp
         </label>
       </div>
 
@@ -320,33 +324,54 @@
     </div>
   </div>
 
-  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
 
 <script>
   // ════════════════════════════════════
-  // CONFIGURAÇÕES GERAIS
+  // MODO DE PRODUÇÃO - DADOS REAIS
   // ════════════════════════════════════
-  const LOC_ICON = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
+  const MODO_TESTE = false; // ← PRODUÇÃO: busca do Airtable via Netlify Function
 
-  const CULTURAS = ["Todas","Café","Milho","Cana","Limão","Pastagem","Cacau","Algodão","Laranja","Feijão","Trigo","Soja"];
-
+  // ════════════════════════════════════
+  // CONFIGURAÇÕES DO EMAILJS
+  // ════════════════════════════════════
   const EMAILJS_PUBLIC_KEY = "i75q5l_s4AV-Ht7ce";
   const EMAILJS_SERVICE_ID = "service_xmuq6kl";
   const EMAILJS_TEMPLATE_ID = "template_93cuy4k";
 
-  let EMPRESAS   = [];
+  // ════════════════════════════════════
+  // CONFIGURAÇÕES GERAIS
+  // ════════════════════════════════════
+  const LOC_ICON = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
+
+  const CULTURAS = ["Todas","Café","Milho","Cana","Limão","Pastagem","Cacau","Algodão","Laranja","Feijão","Trigo","Soja"];
+
+  const SVG_STAR = `<svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+  const SVG_DRONE = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3.5 5.5h4"/><path d="M16.5 5.5h4"/><path d="M5.5 5.5v2"/><path d="M18.5 5.5v2"/><path d="M5.5 7.5h4"/><path d="M14.5 7.5h4"/><path d="M9.5 7.5l1.8 2.5"/><path d="M14.5 7.5L12.7 10"/><rect x="9" y="10" width="6" height="4" rx="1.6"/><rect x="10.5" y="8" width="3" height="1.3" rx=".4"/><path d="M10 14l-1 3"/><path d="M14 14l1 3"/><path d="M8.7 17h2"/><path d="M13.3 17h2"/><path d="M5.5 9.2v2"/><path d="M18.5 9.2v2"/><path d="M4.8 12.2l-.5 1"/><path d="M5.5 12.2v1.6"/><path d="M6.2 12.2l.5 1"/><path d="M17.8 12.2l-.5 1"/><path d="M18.5 12.2v1.6"/><path d="M19.2 12.2l.5 1"/></svg>`;
+  const SVG_SHIELD = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>`;
+  const SVG_STAR_FULL = `<svg width="12" height="12" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+  const SVG_STAR_HALF = `<svg width="12" height="12" viewBox="0 0 24 24"><defs><linearGradient id="half"><stop offset="50%" stop-color="#F59E0B"/><stop offset="50%" stop-color="#E5E7EB"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#half)" stroke="#F59E0B" stroke-width="1"/></svg>`;
+  const SVG_STAR_EMPTY = `<svg width="12" height="12" viewBox="0 0 24 24" fill="#E5E7EB" stroke="#E5E7EB" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+  const SVG_STAR_STAT = `<svg width="26" height="26" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+  const SVG_CLIPBOARD = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h4"/></svg>`;
+  const SVG_SHIELD_STAT = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>`;
+  const SVG_WPP = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>`;
+  const SVG_ORC = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`;
+
+  let EMPRESAS = [];
   let culturaSel = "Todas";
   let apenasDisp = false;
-  let slugAtual  = '';
+  let slugAtual = '';
 
   // ════════════════════════════════════
-  // CARREGAR EMPRESAS (VIA NETLIFY FUNCTION)
+  // CARREGAR EMPRESAS
   // ════════════════════════════════════
   async function carregarEmpresas() {
     document.getElementById("lista-empresas").innerHTML =
       '<div class="vazio"><div class="vazio-icon">⏳</div><div class="vazio-title">Carregando...</div></div>';
 
     try {
+      // Busca via Netlify Function
       const res = await fetch("/.netlify/functions/empresas");
       if (!res.ok) throw new Error("Erro " + res.status);
       const json = await res.json();
@@ -471,13 +496,13 @@
       return;
     }
     lista.innerHTML = filtrados.map(p =>
-      '<div class="card-empresa" onclick="abrirPerfil(\'' + p.slug + '\')">' +
+      '<div class="card-empresa" onclick="abrirPerfil(\'' + (p.slug || p.id) + '\')">' +
         avatarHtml(p, "avatar-sq", "") +
         '<div class="empresa-info">' +
           '<div class="empresa-top"><div class="empresa-nome">' + p.nome + '</div></div>' +
           '<div class="empresa-loc">' + LOC_ICON + ' ' + p.cidade + '</div>' +
           '<div class="empresa-mid">' +
-            '<div class="empresa-rating">⭐ ' + p.avaliacao + ' <span>(' + p.avaliacoes + ') · ' + p.drone.split(" ")[1] + '</span></div>' +
+            '<div class="empresa-rating">' + SVG_STAR + ' ' + p.avaliacao + ' <span>(' + p.avaliacoes + ') · ' + p.drone.split(" ")[1] + '</span></div>' +
             '<div class="status"><div class="status-dot" style="background:' + (p.disponivel ? "#16A34A" : "#D6D3D1") + '"></div>' +
             '<span class="status-txt" style="color:' + (p.disponivel ? "#16A34A" : "#A8A29E") + '">' + (p.disponivel ? "Disponível" : "Indisponível") + '</span></div>' +
           '</div>' +
@@ -486,20 +511,6 @@
       '</div>'
     ).join("");
   }
-
-  // ════════════════════════════════════
-  // SVGs
-  // ════════════════════════════════════
-  const SVG_DRONE = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5h4"/><path d="M16.5 5.5h4"/><path d="M5.5 5.5v2"/><path d="M18.5 5.5v2"/><path d="M5.5 7.5h4"/><path d="M14.5 7.5h4"/><path d="M9.5 7.5l1.8 2.5"/><path d="M14.5 7.5L12.7 10"/><rect x="9" y="10" width="6" height="4" rx="1.6"/><rect x="10.5" y="8" width="3" height="1.3" rx=".4"/><path d="M10 14l-1 3"/><path d="M14 14l1 3"/><path d="M8.7 17h2"/><path d="M13.3 17h2"/><path d="M5.5 9.2v2"/><path d="M18.5 9.2v2"/><path d="M4.8 12.2l-.5 1"/><path d="M5.5 12.2v1.6"/><path d="M6.2 12.2l.5 1"/><path d="M17.8 12.2l-.5 1"/><path d="M18.5 12.2v1.6"/><path d="M19.2 12.2l.5 1"/></svg>`;
-  const SVG_SHIELD = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>`;
-  const SVG_STAR_FULL = `<svg width="12" height="12" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
-  const SVG_STAR_HALF = `<svg width="12" height="12" viewBox="0 0 24 24"><defs><linearGradient id="half"><stop offset="50%" stop-color="#F59E0B"/><stop offset="50%" stop-color="#E5E7EB"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#half)" stroke="#F59E0B" stroke-width="1"/></svg>`;
-  const SVG_STAR_EMPTY = `<svg width="12" height="12" viewBox="0 0 24 24" fill="#E5E7EB" stroke="#E5E7EB" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
-  const SVG_STAR_STAT = `<svg width="26" height="26" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
-  const SVG_CLIPBOARD = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h4"/></svg>`;
-  const SVG_SHIELD_STAT = `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>`;
-  const SVG_WPP = `<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>`;
-  const SVG_ORC = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>`;
 
   function starsHtml(nota) {
     let html = '';
@@ -518,7 +529,7 @@
     document.getElementById("destaques").innerHTML = EMPRESAS
       .filter(p => p.destaque && p.disponivel)
       .map(p =>
-        '<div class="card-dest" onclick="abrirPerfil(\'' + p.slug + '\')">' +
+        '<div class="card-dest" onclick="abrirPerfil(\'' + (p.slug || p.id) + '\')">' +
           '<div class="card-dest-top">' +
             (p.foto ? '<img src="' + p.foto + '" alt="' + p.nome + '">' : '') +
           '</div>' +
@@ -541,23 +552,24 @@
   }
 
   // ════════════════════════════════════
-  // PERFIL - CORRIGIDO!
+  // PERFIL
   // ════════════════════════════════════
   function abrirPerfil(identificador) {
-    // Aceita tanto id quanto slug
-    const p = EMPRESAS.find(x => x.slug === identificador || x.id === identificador);
+    let p = EMPRESAS.find(x => x.slug === identificador);
+    if (!p) p = EMPRESAS.find(x => x.id === identificador);
     if (!p) {
-      console.error('Empresa não encontrada:', identificador);
+      console.error('❌ Empresa não encontrada:', identificador);
       return;
     }
     navegarPara('perfil', p.slug);
   }
 
   function carregarPerfil(identificador) {
-    const p = EMPRESAS.find(x => x.slug === identificador || x.id === identificador);
+    let p = EMPRESAS.find(x => x.slug === identificador);
+    if (!p) p = EMPRESAS.find(x => x.id === identificador);
     if (!p) {
-      console.error('Empresa não encontrada:', identificador);
-      document.getElementById("perfil-top").innerHTML = 
+      console.error('❌ Empresa não encontrada:', identificador);
+      document.getElementById("perfil-top").innerHTML =
         '<div style="text-align:center;padding:40px;color:#78716C;">Empresa não encontrada</div>';
       return;
     }
@@ -571,7 +583,7 @@
           '<div class="disp-dot" style="background:' + (p.disponivel ? "#16A34A" : "#DC2626") + '"></div>' +
           '<span class="disp-txt" style="color:' + (p.disponivel ? "#16A34A" : "#DC2626") + '">' + (p.disponivel ? "Disponível agora" : "Indisponível") + '</span>' +
         '</div>' +
-        (p.link_perfil ? '<a class="ver-perfil-btn" href="' + p.link_perfil + '" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Ver perfil completo ›</a>' : '') +
+        (p.link_perfil ? '<a class="ver-perfil-btn" href="' + p.link_perfil + '" target="_blank">Ver perfil completo ›</a>' : '') +
       '</div>';
 
     document.getElementById("perfil-stats").innerHTML =
@@ -603,7 +615,7 @@
         '<div><div class="equip-lbl">Área máx/dia</div><div class="equip-val">' + (p.area_max || '—') + ' ha</div></div>' +
       '</div></div>' +
       '<div class="info-card"><h3>Culturas atendidas</h3><div class="cult-tags">' +
-        p.culturas.map(c => '<span class="cult-tag" style="background:#16A34A18;color:#16A34A">' + c + '</span>').join("") +
+        p.culturas.map(c => '<span class="cult-tag">' + c + '</span>').join("") +
       '</div></div>' +
       avsHtml;
 
@@ -616,8 +628,8 @@
       const urlOrcamento = p.orcamento || `/orcamento/${p.slug}`;
       document.getElementById("cta-fixo").innerHTML =
         '<div class="cta-btns">' +
-          '<a href="' + urlOrcamento + '" class="btn-orc">' + SVG_ORC + ' Solicitar orçamento</a>' +
-          (temWpp ? '<a href="https://wa.me/' + p.whatsapp + '" target="_blank" rel="noopener" class="btn-wpp">' + SVG_WPP + ' WhatsApp</a>' : '') +
+          '<button onclick="abrirOrcamento(\'' + p.slug + '\')" class="btn-orc">' + SVG_ORC + ' Solicitar orçamento</button>' +
+          (temWpp ? '<a href="https://wa.me/' + p.whatsapp + '" target="_blank" class="btn-wpp">' + SVG_WPP + ' WhatsApp</a>' : '') +
         '</div>';
     }
   }
@@ -626,13 +638,15 @@
   // ORÇAMENTO
   // ════════════════════════════════════
   function abrirOrcamento(slug) {
-    const p = EMPRESAS.find(x => x.slug === slug);
+    let p = EMPRESAS.find(x => x.slug === slug);
+    if (!p) p = EMPRESAS.find(x => x.id === slug);
     if (!p) return;
     navegarPara('orcamento', p.slug);
   }
 
   function carregarOrcamento(slug) {
-    const p = EMPRESAS.find(x => x.slug === slug);
+    let p = EMPRESAS.find(x => x.slug === slug);
+    if (!p) p = EMPRESAS.find(x => x.id === slug);
     if (!p) return;
 
     document.getElementById('orcamento-capa').src = p.foto || '';
@@ -710,9 +724,10 @@
   });
 
   // ════════════════════════════════════
-  // ENVIO DO FORMULÁRIO
+  // ENVIO DO FORMULÁRIO (EMAIL REAL)
   // ════════════════════════════════════
   document.addEventListener('DOMContentLoaded', function() {
+    // Inicializa EmailJS
     emailjs.init(EMAILJS_PUBLIC_KEY);
 
     document.getElementById('formOrcamento').addEventListener('submit', async function(e) {
@@ -723,12 +738,14 @@
       const servicosSelecionados = [...document.querySelectorAll('input[name="servico"]:checked')];
       const servicosErroEl = document.getElementById('servicosErro');
 
+      // Valida serviços
       if (servicosSelecionados.length === 0) {
         servicosErroEl.style.display = 'block';
         return;
       }
       servicosErroEl.style.display = 'none';
 
+      // Valida data
       const dataInput = document.getElementById('data').value;
       const dataValida = /^\d{2}\/\d{2}\/\d{2}$/.test(dataInput);
       if (!dataValida) {
@@ -737,12 +754,14 @@
         return;
       }
 
+      // Monta serviços com culturas
       const servicosTexto = servicosSelecionados.map(s => {
         const idx = s.dataset.idx;
         const culturas = [...document.querySelectorAll(`input[name="cultura-${idx}"]:checked`)].map(c => c.value);
         return culturas.length ? `${s.value} (${culturas.join(', ')})` : s.value;
       });
 
+      // Busca a empresa
       const empresa = EMPRESAS.find(p => p.slug === slugAtual);
       if (!empresa) {
         msgEl.textContent = '❌ Erro: empresa não encontrada';
@@ -750,6 +769,14 @@
         return;
       }
 
+      // Verifica se a empresa tem email
+      if (!empresa.email) {
+        msgEl.textContent = '❌ Erro: empresa não tem email cadastrado';
+        msgEl.className = 'msg-status erro';
+        return;
+      }
+
+      // Monta os dados do lead
       const lead = {
         nome: document.getElementById('nome').value,
         email: document.getElementById('email').value,
@@ -765,6 +792,7 @@
         botao.disabled = true;
         botao.textContent = 'Enviando...';
 
+        // Envia o email para a empresa via EmailJS
         await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
           to_email: empresa.email,
           nome: lead.nome,
@@ -780,14 +808,15 @@
         msgEl.textContent = '✅ Orçamento enviado com sucesso! A empresa vai entrar em contato em breve.';
         msgEl.className = 'msg-status sucesso';
 
+        // Limpa o formulário
         this.reset();
         document.querySelectorAll('.culturas-lista').forEach(el => el.classList.remove('aberta'));
         document.getElementById('obsContador').textContent = '0/200';
 
       } catch (erro) {
-        msgEl.textContent = '❌ Erro ao enviar: ' + erro.message;
+        console.error('Erro ao enviar:', erro);
+        msgEl.textContent = '❌ Erro ao enviar. Tente novamente mais tarde.';
         msgEl.className = 'msg-status erro';
-        console.error(erro);
       } finally {
         botao.disabled = false;
         botao.textContent = 'Enviar orçamento';
@@ -800,12 +829,14 @@
   // ════════════════════════════════════
   window.addEventListener('DOMContentLoaded', function() {
     const path = window.location.pathname;
+
     renderFiltros();
 
     if (path.startsWith('/orcamento/')) {
       const slug = path.split('/')[2];
       carregarEmpresas().then(() => {
-        const empresa = EMPRESAS.find(p => p.slug === slug);
+        let empresa = EMPRESAS.find(p => p.slug === slug);
+        if (!empresa) empresa = EMPRESAS.find(p => p.id === slug);
         if (empresa) {
           navegarPara('orcamento', slug);
         } else {
@@ -815,7 +846,8 @@
     } else if (path.startsWith('/perfil/')) {
       const slug = path.split('/')[2];
       carregarEmpresas().then(() => {
-        const empresa = EMPRESAS.find(p => p.slug === slug);
+        let empresa = EMPRESAS.find(p => p.slug === slug);
+        if (!empresa) empresa = EMPRESAS.find(p => p.id === slug);
         if (empresa) {
           navegarPara('perfil', slug);
         } else {
@@ -827,6 +859,7 @@
     }
   });
 
+  // Botão voltar do navegador
   window.addEventListener('popstate', function(event) {
     if (event.state?.tela === 'perfil' && event.state?.slug) {
       carregarPerfil(event.state.slug);
