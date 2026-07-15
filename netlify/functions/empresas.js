@@ -49,7 +49,7 @@ exports.handler = async function (event) {
         preco:             f.preco             || 0,
         drone:             f.drone             || "",
         area_max:          f.area_max          || 0,
-        culturas:          Array.isArray(f.cultura) ? f.cultura : [],
+        culturas:          Array.isArray(f.culturas) ? f.culturas : (Array.isArray(f.cultura) ? f.cultura : []),
         disponivel:        !!f.disponivel,
         destaque:          !!f.destaque,
         servicos:          f.servicos          || 0,
