@@ -1,0 +1,193 @@
+// ════════════════════════════════════════════════════════
+// CONFIGURAÇÕES GERAIS
+// ════════════════════════════════════════════════════════
+
+const LOC_ICON = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
+
+const CULTURAS = ["Todas","Pastagem","Café","Eucalipto","Frutas...","Soja","Milho","Algodão","Cana","Feijão","Trigo","Cacau"];
+
+let EMPRESAS = [];
+let culturaSel = "Todas";
+let apenasDisp = false;
+
+// ════════════════════════════════════════════════════════
+// CARREGAR EMPRESAS (via Netlify Function)
+// ════════════════════════════════════════════════════════
+
+async function carregarEmpresas() {
+  document.getElementById("lista-empresas").innerHTML =
+    '<div class="vazio"><div class="vazio-icon">⏳</div><div class="vazio-title">Carregando...</div></div>';
+
+  try {
+    // Busca empresas via Netlify Function (token fica no servidor)
+    const res = await fetch("/.netlify/functions/empresas");
+    if (!res.ok) throw new Error("Erro " + res.status);
+    const json = await res.json();
+
+    EMPRESAS = json.empresas.map(p => ({
+      id:               p.id,
+      nome:             p.nome              || "",
+      foto:             p.foto              || "",
+      cidade:           p.cidade            || "",
+      avaliacao:        p.avaliacao         || 0,
+      avaliacoes:       p.avaliacoes        || 0,
+      preco:            p.preco             || 0,
+      drone:            p.drone             || "",
+      area_max:         p.area_max          || 0,
+      culturas:         Array.isArray(p.culturas) ? p.culturas : [],
+      disponivel:       !!p.disponivel,
+      destaque:         !!p.destaque,
+      servicos:         p.servicos          || 0,
+      bio:              p.bio               || "",
+      avaliacoes_texto: p.avaliacoes_texto  || "",
+      orcamento:        p.orcamento         || "",
+      link_perfil:      p.link_perfil       || "",
+      experiencia:      p.experiencia       || 0,
+      whatsapp:         p.whatsapp          || "",
+    }));
+
+    renderDestaques();
+    filtrar();
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("lista-empresas").innerHTML =
+      '<div class="vazio"><div class="vazio-icon">⚠️</div><div class="vazio-title">Erro ao carregar</div><div>Verifique a conexão e recarregue</div></div>';
+  }
+}
+
+// ─────────────────────────────────────
+// AVATAR
+// ─────────────────────────────────────
+
+function avatarHtml(p, cssClass, style) {
+  const img = p.foto ? '<img src="' + p.foto + '" alt="' + p.nome + '">' : '';
+  return '<div class="' + cssClass + '" style="' + style + '">' + img + '</div>';
+}
+
+function orcamentoUrl(empresa) {
+  return (empresa && empresa.orcamento) ? empresa.orcamento : "";
+}
+
+function navShow(show) {
+  document.getElementById("bottom-nav").style.display = show ? "flex" : "none";
+}
+
+// ─────────────────────────────────────
+// FILTROS
+// ─────────────────────────────────────
+
+function renderFiltros() {
+  document.getElementById("filtros").innerHTML = CULTURAS.map(c =>
+    '<button class="chip' + (c === culturaSel ? " ativo" : "") + '" onclick="setCultura(\'' + c + '\')">' + c + '</button>'
+  ).join("");
+}
+
+function setCultura(c) { culturaSel = c; renderFiltros(); filtrar(); }
+
+function toggleDisp() {
+  apenasDisp = !apenasDisp;
+  document.getElementById("dot-disp").className     = "dot" + (apenasDisp ? " ativo" : "");
+  document.getElementById("toggle-txt").textContent = apenasDisp ? "Mostrando disponíveis" : "Mostrar só disponíveis";
+  filtrar();
+}
+
+// ─────────────────────────────────────
+// LISTA DE EMPRESAS
+// ─────────────────────────────────────
+
+function filtrar() {
+  const busca = document.getElementById("busca").value.toLowerCase();
+  const filtrados = EMPRESAS.filter(p => {
+    const okC = culturaSel === "Todas" || p.culturas.includes(culturaSel);
+    const okB = p.nome.toLowerCase().includes(busca) || p.cidade.toLowerCase().includes(busca);
+    return okC && okB && (!apenasDisp || p.disponivel);
+  });
+
+  document.getElementById("count-txt").textContent   = filtrados.length + " empresas";
+  document.getElementById("lista-title").textContent = culturaSel === "Todas" ? "Especialistas para sua lavoura:" : "Empresas para " + culturaSel;
+  document.getElementById("destaques-section").style.display = (culturaSel === "Todas" && !busca) ? "" : "none";
+  
+  const ordem = document.getElementById("ordenar").value;
+  if (ordem === "avaliacao") filtrados.sort((a,b) => b.avaliacao - a.avaliacao);
+  else if (ordem === "az") filtrados.sort((a,b) => a.nome.localeCompare(b.nome)); 
+  
+  const lista = document.getElementById("lista-empresas");
+  if (!filtrados.length) {
+    lista.innerHTML = '<div class="vazio"><div class="vazio-icon">🔍</div><div class="vazio-title">Nenhum resultado</div><div>Tente outros filtros ou região</div></div>';
+    return;
+  }
+  
+  lista.innerHTML = filtrados.map(p =>
+    '<div class="card-empresa" onclick="abrirPerfil(\'' + p.id + '\')">' +
+      avatarHtml(p, "avatar-sq", "") +
+      '<div class="empresa-info">' +
+        '<div class="empresa-top"><div class="empresa-nome">' + p.nome + '</div></div>' +
+        '<div class="empresa-loc">' + LOC_ICON + ' ' + p.cidade + ' ' + '</div>' +
+        '<div class="empresa-mid">' +
+          '<div class="empresa-rating">⭐ ' + p.avaliacao + ' <span>(' + p.avaliacoes + ') · ' + p.drone.split(" ")[1] + '</span></div>' +
+          '<div class="status"><div class="status-dot" style="background:' + (p.disponivel ? "#16A34A" : "#D6D3D1") + '"></div>' +
+          '<span class="status-txt" style="color:' + (p.disponivel ? "#16A34A" : "#A8A29E") + '">' + (p.disponivel ? "Disponível" : "Indisponível") + '</span></div>' +
+        '</div>' +
+        '<div class="tags">' + p.culturas.slice(0,3).map(c => '<span class="tag">' + c + '</span>').join("") + (p.culturas.length > 3 ? '<span class="tag">+' + (p.culturas.length-3) + '</span>' : '') + '</div>' +
+      '</div>' +
+    '</div>'
+  ).join("");
+}
+
+// ─────────────────────────────────────
+// SVGs e FUNÇÕES AUXILIARES
+// ─────────────────────────────────────
+
+const SVG_DRONE = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5h4"/><path d="M16.5 5.5h4"/><path d="M5.5 5.5v2"/><path d="M18.5 5.5v2"/><path d="M5.5 7.5h4"/><path d="M14.5 7.5h4"/><path d="M9.5 7.5l1.8 2.5"/><path d="M14.5 7.5L12.7 10"/><rect x="9" y="10" width="6" height="4" rx="1.6"/><rect x="10.5" y="8" width="3" height="1.3" rx=".4"/><path d="M10 14l-1 3"/><path d="M14 14l1 3"/><path d="M8.7 17h2"/><path d="M13.3 17h2"/><path d="M5.5 9.2v2"/><path d="M18.5 9.2v2"/><path d="M4.8 12.2l-.5 1"/><path d="M5.5 12.2v1.6"/><path d="M6.2 12.2l.5 1"/><path d="M17.8 12.2l-.5 1"/><path d="M18.5 12.2v1.6"/><path d="M19.2 12.2l.5 1"/></svg>`;
+
+const SVG_SHIELD = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>`;
+
+const SVG_STAR_FULL = `<svg width="12" height="12" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+
+const SVG_STAR_HALF = `<svg width="12" height="12" viewBox="0 0 24 24"><defs><linearGradient id="half"><stop offset="50%" stop-color="#F59E0B"/><stop offset="50%" stop-color="#E5E7EB"/></linearGradient></defs><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" fill="url(#half)" stroke="#F59E0B" stroke-width="1"/></svg>`;
+
+const SVG_STAR_EMPTY = `<svg width="12" height="12" viewBox="0 0 24 24" fill="#E5E7EB" stroke="#E5E7EB" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+
+function starsHtml(nota) {
+  let html = '';
+  for (let i = 1; i <= 5; i++) {
+    if (nota >= i) html += SVG_STAR_FULL;
+    else if (nota >= i - 0.5) html += SVG_STAR_HALF;
+    else html += SVG_STAR_EMPTY;
+  }
+  return html;
+}
+
+function renderDestaques() {
+  document.getElementById("destaques").innerHTML = EMPRESAS
+    .filter(p => p.destaque && p.disponivel)
+    .map(p =>
+      '<div class="card-dest" onclick="abrirPerfil(\'' + p.id + '\')">' +
+        '<div class="card-dest-top">' +
+          (p.foto ? '<img src="' + p.foto + '" alt="' + p.nome + '">' : '') +
+        '</div>' +
+        '<div class="card-dest-bottom">' +
+          '<div class="card-dest-main">' +
+            '<div class="card-dest-texto">' +
+              '<div class="card-dest-nome">' + p.nome + '</div>' +
+              '<div class="card-dest-cidad"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#78716C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>' + p.cidade + '</div>' +
+            '</div>' +
+            '<div class="card-dest-avaliacao">' +
+              '<div class="card-dest-star-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="#F59E0B" stroke="#F59E0B" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>' +
+              '<div class="card-dest-nota">' + p.avaliacao + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="card-dest-info">' + SVG_DRONE + '<span class="card-dest-info-txt">' + (p.drone || '—') + '</span></div>' +
+          '<div class="card-dest-info" style="margin-top:4px">' + SVG_SHIELD + '<span class="card-dest-info-txt">Empresa verificada</span></div>' +
+        '</div>' +
+      '</div>'
+    ).join("");
+}
+
+// ─────────────────────────────────────
+// INICIALIZAÇÃO
+// ─────────────────────────────────────
+
+renderFiltros();
+carregarEmpresas();
