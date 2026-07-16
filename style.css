@@ -62,11 +62,8 @@ button { cursor: pointer; font-family: inherit; }
 .card-dest-bottom { padding: 6px 8px 9px; }
 .card-dest-main { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 11px; position: relative; }
 .card-dest-texto { flex: 1; min-width: 0; margin-right: 4px; }
-.card-dest-nome {
-  font-weight: 700; font-size: 15px; color: #1C1917; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-word;
-  max-height: 2.4em; }
+.card-dest-nome { font-weight: 700; font-size: 15px; color: #1C1917; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 1; 
+-webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; word-break: break-word; max-height: 2.4em; }
 .card-dest-cidad { display: flex; align-items: center; gap: 3px; font-size: 11px; color: #78716C; margin-top: 3px; }
 .card-dest-avaliacao {
   position: absolute;
