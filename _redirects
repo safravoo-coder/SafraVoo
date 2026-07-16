@@ -1,8 +1,0 @@
-# ════════════════════════════════════
-# NETLIFY REDIRECTS
-# Necessário para o History API funcionar.
-# Qualquer rota /perfil/* ou /orcamento/*
-# serve o index.html e o JS trata o resto.
-# ════════════════════════════════════
-/perfil/*      /index.html    200
-/orcamento/*   /index.html    200
