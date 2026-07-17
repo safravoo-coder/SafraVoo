@@ -187,7 +187,7 @@ function renderDestaques() {
 }
 
 // ════════════════════════════════════════════════════════
-// FUNÇÃO ABRIR PERFIL (REDIRECIONA PARA URL AMIGÁVEL)
+// FUNÇÃO ABRIR PERFIL (URL AMIGÁVEL)
 // ════════════════════════════════════════════════════════
 
 function abrirPerfil(slug) {
