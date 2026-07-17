@@ -82,26 +82,5 @@
 
 <script src="/script.js"></script>
 
-<script>
-  // ════════════════════════════════════════════════════════
-  // SOBRESCREVER A FUNÇÃO abrirPerfil PARA NAVEGAÇÃO
-  // ════════════════════════════════════════════════════════
-  function abrirPerfil(id) {
-    window.location.href = 'perfil.html?id=' + id;
-  }
-
-  // ════════════════════════════════════════════════════════
-  // GARANTIR QUE A HOME ESTEJA VISÍVEL
-  // ════════════════════════════════════════════════════════
-  document.addEventListener('DOMContentLoaded', function() {
-    const homeEl = document.getElementById('tela-home');
-    if (homeEl) homeEl.style.display = '';
-    
-    // Esconde a tela de perfil se existir (por segurança)
-    const perfilEl = document.getElementById('tela-perfil');
-    if (perfilEl) perfilEl.style.display = 'none';
-  });
-</script>
-
 </body>
 </html>
