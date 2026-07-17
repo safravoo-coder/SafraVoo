@@ -12,17 +12,13 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="theme-color" content="#16A34A"/>
-  <title>SafraVoo — Perfil</title>
+  <title>SafraVoo — Perfil da Empresa</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ══════════════════════════════════
-     TELA PERFIL DA EMPRESA
-══════════════════════════════════ -->
 <div id="tela-perfil">
 
-  <!-- CABEÇALHO COM BOTÃO VOLTAR -->
   <div class="perfil-header">
     <button class="back-btn" onclick="voltarHome()">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#57534E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -32,7 +28,6 @@
     <span class="perfil-title">Perfil da Empresa</span>
   </div>
 
-  <!-- Loading -->
   <div id="loading-perfil" style="text-align:center;padding:60px 20px;">
     <div style="font-size:48px;margin-bottom:12px;">⏳</div>
     <div style="font-weight:700;font-size:16px;color:#1C1917;">Carregando perfil...</div>
@@ -48,6 +43,33 @@
 
 <script>
   // ════════════════════════════════════════════════════════
+  // IDENTIFICADOR: FUNCIONA PARA AMBAS AS URLs
+  // ════════════════════════════════════════════════════════
+
+  function getIdentificador() {
+    // 1. Tenta pegar da URL amigável: /empresa/pulveriza-drones
+    const path = window.location.pathname;
+    if (path.includes('/empresa/')) {
+      const partes = path.split('/');
+      const index = partes.indexOf('empresa');
+      if (partes.length > index + 1) {
+        return partes[index + 1];
+      }
+    }
+
+    // 2. Tenta pegar da query string (?id=...)
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    if (id) return id;
+
+    // 3. Tenta pegar da query string (?slug=...)
+    const slug = urlParams.get('slug');
+    if (slug) return slug;
+
+    return '';
+  }
+
+  // ════════════════════════════════════════════════════════
   // FUNÇÕES DE NAVEGAÇÃO
   // ════════════════════════════════════════════════════════
 
@@ -56,41 +78,8 @@
   }
 
   function irParaAvaliacao() {
-    const slug = getIdentificador();
-    if (slug) {
-      window.location.href = '/avaliar/' + slug;
-    }
-  }
-
-  // ===== LER IDENTIFICADOR (slug ou ID) =====
-  function getIdentificador() {
-    // 1. Tenta pegar da URL amigável: /empresa/pulveriza-drones
-    const path = window.location.pathname;
-    const partes = path.split('/');
-    
-    // Se for /empresa/ALGO, pega o ALGO
-    if (partes.includes('empresa')) {
-      const index = partes.indexOf('empresa');
-      if (partes.length > index + 1) {
-        return partes[index + 1];
-      }
-    }
-    
-    // 2. Fallback: tenta pegar da query string (?id=...)
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-    if (id) {
-      return id;
-    }
-    
-    // 3. Fallback: tenta pegar do último segmento da URL
-    // (ex: /perfil.html?slug=algo ou /perfil.html?id=algo)
-    const slugParam = urlParams.get('slug');
-    if (slugParam) {
-      return slugParam;
-    }
-    
-    return '';
+    const id = getIdentificador();
+    if (id) window.location.href = '/avaliar/' + id;
   }
 
   // ════════════════════════════════════════════════════════
@@ -104,14 +93,10 @@
       '<div class="vazio"><div class="vazio-icon">🔍</div><div class="vazio-title">' + mensagem + '</div></div>';
   }
 
-  // ===== CARREGAR PERFIL =====
   async function carregarPerfil() {
     const identificador = getIdentificador();
-    
     console.log('🔗 Identificador:', identificador);
-    console.log('📍 URL atual:', window.location.href);
-    console.log('📍 Pathname:', window.location.pathname);
-    
+
     if (!identificador) {
       mostrarErro('Empresa não encontrada');
       return;
@@ -119,36 +104,34 @@
 
     try {
       const resposta = await fetch('/.netlify/functions/empresas');
-      if (!resposta.ok) throw new Error('Erro ao carregar dados: ' + resposta.status);
+      if (!resposta.ok) throw new Error('Erro ao carregar dados');
       const dados = await resposta.json();
-      
-      console.log('📊 Empresas carregadas:', dados.empresas.length);
-      
-      // Busca por slug OU por ID
+
       const empresa = dados.empresas.find(e => 
         e.slug === identificador || 
         e.id === identificador ||
         e.slug === identificador.toLowerCase()
       );
-      
+
       if (!empresa) {
-        console.warn('⚠️ Empresa não encontrada para:', identificador);
         mostrarErro('Empresa não encontrada');
         return;
       }
-      
-      console.log('✅ Empresa encontrada:', empresa.nome);
+
       renderizarPerfil(empresa);
-      
+
     } catch (erro) {
       console.error('❌ Erro:', erro);
-      mostrarErro('Erro ao carregar dados. Tente novamente.');
+      mostrarErro('Erro ao carregar dados.');
     }
   }
 
-  // ===== RENDERIZAR PERFIL =====
+  // ════════════════════════════════════════════════════════
+  // RENDERIZAR PERFIL (COM CULTURAS CORRETAS)
+  // ════════════════════════════════════════════════════════
+
   function renderizarPerfil(p) {
-    console.log('🎨 Renderizando perfil:', p.nome);
+    console.log('🎨 Renderizando:', p.nome);
 
     document.getElementById("loading-perfil").style.display = "none";
     document.getElementById("perfil-top").style.display = "";
@@ -165,6 +148,7 @@
 
     let avatarHtml = p.foto ? '<img src="' + p.foto + '" alt="' + p.nome + '">' : '';
 
+    // ===== TOPO =====
     document.getElementById("perfil-top").innerHTML =
       '<div class="perfil-avatar">' + avatarHtml + '</div>' +
       '<div class="perfil-nome">' + p.nome + '</div>' +
@@ -177,21 +161,34 @@
         (p.link_perfil ? '<a class="ver-perfil-btn" href="' + p.link_perfil + '" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Ver perfil completo ›</a>' : '') +
       '</div>';
 
+    // ===== ESTATÍSTICAS =====
     document.getElementById("perfil-stats").innerHTML =
       '<div class="stat-card"><div class="stat-icon-svg">' + SVG_STAR_STAT + '</div><div class="stat-val">' + p.avaliacao + '</div><div class="stat-stars">' + gerarEstrelas(p.avaliacao) + '</div><div class="stat-lbl">Avaliação</div></div>' +
       '<div class="stat-card"><div class="stat-icon-svg">' + SVG_CLIPBOARD + '</div><div class="stat-val">' + p.servicos + '</div><div class="stat-lbl">Serviços realizados</div></div>' +
       '<div class="stat-card"><div class="stat-icon-svg">' + SVG_SHIELD_STAT + '</div><div class="stat-val">' + (p.experiencia || "—") + (p.experiencia ? ' anos' : '') + '</div><div class="stat-lbl">Experiência</div></div>';
 
+    // ===== CORPO =====
+    // GERANDO AS CULTURAS COM ESPAÇO ENTRE ELAS
+    let culturasHtml = '';
+    if (p.culturas && p.culturas.length > 0) {
+      culturasHtml = p.culturas.map(c => 
+        '<span class="cult-tag" style="background:#16A34A18;color:#16A34A;display:inline-block;margin:4px 6px 4px 0;padding:5px 14px;border-radius:50px;font-size:12px;font-weight:600;">' + c + '</span>'
+      ).join(' ');  // ← ESPAÇO ENTRE AS TAGS
+    } else {
+      culturasHtml = '<span style="color:#A8A29E;font-size:13px;">Nenhuma cultura cadastrada</span>';
+    }
+
     document.getElementById("perfil-body").innerHTML =
       '<div class="info-card"><h3>Sobre</h3><p>' + (p.bio || 'Empresa especializada em serviços agrícolas com drones.') + '</p></div>' +
       '<div class="info-card"><h3>Equipamento</h3><div class="equip-row"><div><div class="equip-lbl">Drone</div><div class="equip-val">' + (p.drone || '—') + '</div></div><div><div class="equip-lbl">Área máx/dia</div><div class="equip-val">' + (p.area_max || '—') + ' ha</div></div></div></div>' +
-      '<div class="info-card"><h3>Culturas atendidas</h3><div class="cult-tags">' + (p.culturas && p.culturas.length > 0 ? p.culturas.map(c => '<span class="cult-tag" style="background:#16A34A18;color:#16A34A">' + c + '</span>').join("") : '<span style="color:#A8A29E;font-size:13px;">Nenhuma cultura cadastrada</span>') + '</div></div>' +
+      '<div class="info-card"><h3>Culturas atendidas</h3><div class="cult-tags" style="display:flex;flex-wrap:wrap;gap:4px;">' + culturasHtml + '</div></div>' +
       '<div class="info-card">' +
         '<h3>Avaliações</h3>' +
         '<div id="lista-avaliacoes"><p style="color:#A8A29E;font-size:13px;">Carregando avaliações...</p></div>' +
         '<button onclick="irParaAvaliacao()" style="margin-top:12px;background:#F0EBE3;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;color:#57534E;cursor:pointer;">➕ Adicionar avaliação</button>' +
       '</div>';
 
+    // ===== BOTÕES =====
     if (!p.disponivel) {
       document.getElementById("cta-fixo").innerHTML = '<div class="btn-unico">Indisponível no momento</div>';
     } else {
