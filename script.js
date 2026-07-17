@@ -19,31 +19,31 @@ async function carregarEmpresas() {
     '<div class="vazio"><div class="vazio-icon">⏳</div><div class="vazio-title">Carregando...</div></div>';
 
   try {
-    // Busca empresas via Netlify Function (token fica no servidor)
     const res = await fetch("/.netlify/functions/empresas");
     if (!res.ok) throw new Error("Erro " + res.status);
     const json = await res.json();
 
     EMPRESAS = json.empresas.map(p => ({
-      id:               p.id,
-      nome:             p.nome              || "",
-      foto:             p.foto              || "",
-      cidade:           p.cidade            || "",
-      avaliacao:        p.avaliacao         || 0,
-      avaliacoes:       p.avaliacoes        || 0,
-      preco:            p.preco             || 0,
-      drone:            p.drone             || "",
-      area_max:         p.area_max          || 0,
-      culturas:         Array.isArray(p.culturas) ? p.culturas : [],
-      disponivel:       !!p.disponivel,
-      destaque:         !!p.destaque,
-      servicos:         p.servicos          || 0,
-      bio:              p.bio               || "",
-      avaliacoes_texto: p.avaliacoes_texto  || "",
-      orcamento:        p.orcamento         || "",
-      link_perfil:      p.link_perfil       || "",
-      experiencia:      p.experiencia       || 0,
-      whatsapp:         p.whatsapp          || "",
+      id: p.id,
+      slug: p.slug || p.id,
+      nome: p.nome || "",
+      foto: p.foto || "",
+      cidade: p.cidade || "",
+      avaliacao: p.avaliacao || 0,
+      avaliacoes: p.avaliacoes || 0,
+      preco: p.preco || 0,
+      drone: p.drone || "",
+      area_max: p.area_max || 0,
+      culturas: Array.isArray(p.culturas) ? p.culturas : [],
+      disponivel: !!p.disponivel,
+      destaque: !!p.destaque,
+      servicos: p.servicos || 0,
+      bio: p.bio || "",
+      avaliacoes_texto: p.avaliacoes_texto || "",
+      orcamento: p.orcamento || "",
+      link_perfil: p.link_perfil || "",
+      experiencia: p.experiencia || 0,
+      whatsapp: p.whatsapp || "",
     }));
 
     renderDestaques();
@@ -70,7 +70,8 @@ function orcamentoUrl(empresa) {
 }
 
 function navShow(show) {
-  document.getElementById("bottom-nav").style.display = show ? "flex" : "none";
+  const nav = document.getElementById("bottom-nav");
+  if (nav) nav.style.display = show ? "flex" : "none";
 }
 
 // ─────────────────────────────────────
@@ -87,7 +88,7 @@ function setCultura(c) { culturaSel = c; renderFiltros(); filtrar(); }
 
 function toggleDisp() {
   apenasDisp = !apenasDisp;
-  document.getElementById("dot-disp").className     = "dot" + (apenasDisp ? " ativo" : "");
+  document.getElementById("dot-disp").className = "dot" + (apenasDisp ? " ativo" : "");
   document.getElementById("toggle-txt").textContent = apenasDisp ? "Mostrando disponíveis" : "Mostrar só disponíveis";
   filtrar();
 }
@@ -104,7 +105,7 @@ function filtrar() {
     return okC && okB && (!apenasDisp || p.disponivel);
   });
 
-  document.getElementById("count-txt").textContent   = filtrados.length + " empresas";
+  document.getElementById("count-txt").textContent = filtrados.length + " empresas";
   document.getElementById("lista-title").textContent = culturaSel === "Todas" ? "Especialistas para sua lavoura:" : "Empresas para " + culturaSel;
   document.getElementById("destaques-section").style.display = (culturaSel === "Todas" && !busca) ? "" : "none";
   
@@ -119,13 +120,13 @@ function filtrar() {
   }
   
   lista.innerHTML = filtrados.map(p =>
-    '<div class="card-empresa" onclick="abrirPerfil(\'' + p.id + '\')">' +
+    '<div class="card-empresa" onclick="abrirPerfil(\'' + p.slug + '\')">' +
       avatarHtml(p, "avatar-sq", "") +
       '<div class="empresa-info">' +
         '<div class="empresa-top"><div class="empresa-nome">' + p.nome + '</div></div>' +
         '<div class="empresa-loc">' + LOC_ICON + ' ' + p.cidade + ' ' + '</div>' +
         '<div class="empresa-mid">' +
-          '<div class="empresa-rating">⭐ ' + p.avaliacao + ' <span>(' + p.avaliacoes + ') · ' + p.drone.split(" ")[1] + '</span></div>' +
+          '<div class="empresa-rating">⭐ ' + p.avaliacao + ' <span>(' + p.avaliacoes + ') · ' + (p.drone ? p.drone.split(" ")[1] : '') + '</span></div>' +
           '<div class="status"><div class="status-dot" style="background:' + (p.disponivel ? "#16A34A" : "#D6D3D1") + '"></div>' +
           '<span class="status-txt" style="color:' + (p.disponivel ? "#16A34A" : "#A8A29E") + '">' + (p.disponivel ? "Disponível" : "Indisponível") + '</span></div>' +
         '</div>' +
@@ -136,7 +137,7 @@ function filtrar() {
 }
 
 // ─────────────────────────────────────
-// SVGs e FUNÇÕES AUXILIARES
+// SVG e FUNÇÕES AUXILIARES
 // ─────────────────────────────────────
 
 const SVG_DRONE = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5h4"/><path d="M16.5 5.5h4"/><path d="M5.5 5.5v2"/><path d="M18.5 5.5v2"/><path d="M5.5 7.5h4"/><path d="M14.5 7.5h4"/><path d="M9.5 7.5l1.8 2.5"/><path d="M14.5 7.5L12.7 10"/><rect x="9" y="10" width="6" height="4" rx="1.6"/><rect x="10.5" y="8" width="3" height="1.3" rx=".4"/><path d="M10 14l-1 3"/><path d="M14 14l1 3"/><path d="M8.7 17h2"/><path d="M13.3 17h2"/><path d="M5.5 9.2v2"/><path d="M18.5 9.2v2"/><path d="M4.8 12.2l-.5 1"/><path d="M5.5 12.2v1.6"/><path d="M6.2 12.2l.5 1"/><path d="M17.8 12.2l-.5 1"/><path d="M18.5 12.2v1.6"/><path d="M19.2 12.2l.5 1"/></svg>`;
@@ -163,7 +164,7 @@ function renderDestaques() {
   document.getElementById("destaques").innerHTML = EMPRESAS
     .filter(p => p.destaque && p.disponivel)
     .map(p =>
-      '<div class="card-dest" onclick="abrirPerfil(\'' + p.id + '\')">' +
+      '<div class="card-dest" onclick="abrirPerfil(\'' + p.slug + '\')">' +
         '<div class="card-dest-top">' +
           (p.foto ? '<img src="' + p.foto + '" alt="' + p.nome + '">' : '') +
         '</div>' +
@@ -183,6 +184,14 @@ function renderDestaques() {
         '</div>' +
       '</div>'
     ).join("");
+}
+
+// ════════════════════════════════════════════════════════
+// FUNÇÃO ABRIR PERFIL (REDIRECIONA PARA URL AMIGÁVEL)
+// ════════════════════════════════════════════════════════
+
+function abrirPerfil(slug) {
+  window.location.href = '/empresa/' + slug;
 }
 
 // ─────────────────────────────────────
