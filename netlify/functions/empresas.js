@@ -1,5 +1,5 @@
 // netlify/functions/empresas.js
-const axios = require('axios');
+// SEM axios - usando fetch nativo do Node.js
 
 exports.handler = async function(event, context) {
   const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN;
@@ -17,16 +17,23 @@ exports.handler = async function(event, context) {
   }
 
   try {
-    const resposta = await axios.get(
-      `https://api.airtable.com/v0/${AIRTABLE_BASE}/${TABELA_EMPRESAS}`,
-      {
-        headers: { 'Authorization': `Bearer ${AIRTABLE_TOKEN}` }
+    const url = `https://api.airtable.com/v0/${AIRTABLE_BASE}/${TABELA_EMPRESAS}`;
+    
+    const resposta = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${AIRTABLE_TOKEN}`
       }
-    );
+    });
 
-    const empresas = resposta.data.records.map(record => ({
+    if (!resposta.ok) {
+      throw new Error(`Erro na API: ${resposta.status}`);
+    }
+
+    const dados = await resposta.json();
+
+    const empresas = dados.records.map(record => ({
       id: record.id,
-      slug: record.fields.slug || record.id, // ← NOVO: campo slug
+      slug: record.fields.slug || record.id,
       nome: record.fields.nome || '',
       foto: record.fields.foto || '',
       cidade: record.fields.cidade || '',
@@ -63,7 +70,10 @@ exports.handler = async function(event, context) {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ erro: 'Erro ao buscar empresas' })
+      body: JSON.stringify({ 
+        erro: 'Erro ao buscar empresas',
+        detalhe: erro.message
+      })
     };
   }
 };
