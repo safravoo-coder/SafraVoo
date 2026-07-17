@@ -1,11 +1,17 @@
-# Redireciona a raiz para o index sem mostrar .html
+# netlify/_redirects
+
+# Redireciona a raiz para o index
 / /index.html 200
 
-# Redireciona /index para / (remove o index.html)
+# Remove .html das URLs
 /index / 301
-
-# Redireciona /index.html para / (remove o .html)
 /index.html / 301
 
-# Páginas não encontradas vão para a home (404 amigável)
+# ===== URLs amigáveis para perfis =====
+/empresa/* /perfil.html 200
+
+# ===== URLs amigáveis para avaliações =====
+/avaliar/* /avaliacao.html 200
+
+# 404 amigável
 /* /index.html 404
