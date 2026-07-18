@@ -35,8 +35,16 @@
      </svg></span>
         <input type="text" class="search-input" id="busca" placeholder=" Sua Cidade / Região..." oninput="filtrar()"/>
       </div>
-      <h3 class="filtros-title">Selecione a cultura</h3>
-      <div class="filtros" id="filtros"></div>
+      
+      <!-- ══════════════════════════════════
+           NOVA SEÇÃO: SERVIÇO DESEJADO
+      ══════════════════════════════════ -->
+      <h3 class="filtros-title">Serviço desejado</h3>
+      <div class="servicos-container" id="servicos-container"></div>
+      <!-- ══════════════════════════════════
+           FIM DA NOVA SEÇÃO
+      ══════════════════════════════════ -->
+
     </div>
 
     <div class="toggle-row">
@@ -78,6 +86,24 @@
 
   </div>
 
+</div>
+
+<!-- ══════════════════════════════════
+     MODAL DE SELEÇÃO
+══════════════════════════════════ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h3 id="modal-titulo">Serviço</h3>
+      <button class="modal-fechar" id="modal-fechar" aria-label="Fechar">✕</button>
+    </div>
+    <div class="modal-sub" id="modal-sub">Selecione as opções desejadas:</div>
+    <div class="modal-opcoes" id="modal-opcoes"></div>
+    <div class="modal-acoes">
+      <button class="btn-aplicar" id="modal-aplicar">Aplicar filtro</button>
+      <button class="btn-cancelar" id="modal-cancelar">Cancelar</button>
+    </div>
+  </div>
 </div>
 
 <script src="/script.js"></script>
