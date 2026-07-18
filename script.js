@@ -4,11 +4,40 @@
 
 const LOC_ICON = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
 
-const CULTURAS = ["Todas","Pastagem","Café","Eucalipto","Frutas...","Soja","Milho","Algodão","Cana","Feijão","Trigo","Cacau"];
+// ════════════════════════════════════════════════════════
+// DADOS DOS SERVIÇOS (NOVO)
+// ════════════════════════════════════════════════════════
+
+const SERVICOS = [
+  {
+    id: 'pulverizacao',
+    nome: 'Pulverização',
+    sub: ['Café', 'Soja', 'Milho', 'Cana', 'Pastagem', 'Feijão', 'Trigo', 'Algodão']
+  },
+  {
+    id: 'mapeamento',
+    nome: 'Mapeamento',
+    sub: ['NDVI', 'Topografia', 'Área plantada', 'Drenagem']
+  },
+  {
+    id: 'monitoramento',
+    nome: 'Monitoramento',
+    sub: ['Pragas', 'Umidade do solo', 'Crescimento da lavoura']
+  },
+  {
+    id: 'dispersao',
+    nome: 'Dispersão de Sólidos',
+    sub: ['Sementes', 'Fertilizantes granulados', 'Inoculantes']
+  }
+];
+
+// ════════════════════════════════════════════════════════
+// ESTADO GLOBAL
+// ════════════════════════════════════════════════════════
 
 let EMPRESAS = [];
-let culturaSel = "Todas";
 let apenasDisp = false;
+let filtrosAtivos = {}; // { servicoId: [sub1, sub2, ...] }
 
 // ════════════════════════════════════════════════════════
 // CARREGAR EMPRESAS (via Netlify Function)
@@ -47,6 +76,7 @@ async function carregarEmpresas() {
     }));
 
     renderDestaques();
+    renderServicos();
     filtrar();
 
   } catch (err) {
@@ -75,16 +105,102 @@ function navShow(show) {
 }
 
 // ─────────────────────────────────────
-// FILTROS
+// RENDERIZAR CARDS DE SERVIÇO (NOVO)
 // ─────────────────────────────────────
 
-function renderFiltros() {
-  document.getElementById("filtros").innerHTML = CULTURAS.map(c =>
-    '<button class="chip' + (c === culturaSel ? " ativo" : "") + '" onclick="setCultura(\'' + c + '\')">' + c + '</button>'
-  ).join("");
+function renderServicos() {
+  const container = document.getElementById('servicos-container');
+  if (!container) return;
+
+  container.innerHTML = SERVICOS.map(s => {
+    const selecionados = filtrosAtivos[s.id] || [];
+    const badge = selecionados.length > 0 ? `<span class="badge visivel">${selecionados.length}</span>` : `<span class="badge"></span>`;
+    return `
+      <div class="servico-card" data-servico="${s.id}" onclick="abrirModal('${s.id}')">
+        <span class="nome">${s.nome}</span>
+        ${badge}
+        <span class="seta">▼</span>
+      </div>
+    `;
+  }).join('');
 }
 
-function setCultura(c) { culturaSel = c; renderFiltros(); filtrar(); }
+// ─────────────────────────────────────
+// MODAL (NOVO)
+// ─────────────────────────────────────
+
+let modalServicoId = null;
+
+function abrirModal(servicoId) {
+  const servico = SERVICOS.find(s => s.id === servicoId);
+  if (!servico) return;
+
+  modalServicoId = servicoId;
+  const selecionados = filtrosAtivos[servicoId] || [];
+
+  document.getElementById('modal-titulo').textContent = servico.nome;
+  document.getElementById('modal-sub').textContent = servicoId === 'pulverizacao' 
+    ? 'Selecione a cultura desejada:' 
+    : 'Selecione as opções desejadas:';
+
+  const opcoesContainer = document.getElementById('modal-opcoes');
+  opcoesContainer.innerHTML = servico.sub.map(op => `
+    <label class="${selecionados.includes(op) ? 'selecionado' : ''}">
+      <input type="checkbox" value="${op}" ${selecionados.includes(op) ? 'checked' : ''}>
+      ${op}
+    </label>
+  `).join('');
+
+  opcoesContainer.querySelectorAll('label').forEach(label => {
+    const checkbox = label.querySelector('input[type="checkbox"]');
+    checkbox.addEventListener('change', function() {
+      label.classList.toggle('selecionado', this.checked);
+    });
+  });
+
+  document.getElementById('modal-overlay').classList.add('aberto');
+}
+
+function fecharModal() {
+  document.getElementById('modal-overlay').classList.remove('aberto');
+}
+
+function aplicarFiltro() {
+  const opcoes = document.querySelectorAll('#modal-opcoes input[type="checkbox"]:checked');
+  const selecionados = Array.from(opcoes).map(el => el.value);
+
+  if (selecionados.length > 0) {
+    filtrosAtivos[modalServicoId] = selecionados;
+  } else {
+    delete filtrosAtivos[modalServicoId];
+  }
+
+  fecharModal();
+  renderServicos();
+  filtrar();
+}
+
+// ════════════════════════════════════════════════════════
+// EVENTOS DO MODAL
+// ════════════════════════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded', function() {
+  const fecharBtn = document.getElementById('modal-fechar');
+  const cancelarBtn = document.getElementById('modal-cancelar');
+  const aplicarBtn = document.getElementById('modal-aplicar');
+  const overlay = document.getElementById('modal-overlay');
+
+  if (fecharBtn) fecharBtn.addEventListener('click', fecharModal);
+  if (cancelarBtn) cancelarBtn.addEventListener('click', fecharModal);
+  if (aplicarBtn) aplicarBtn.addEventListener('click', aplicarFiltro);
+  if (overlay) overlay.addEventListener('click', function(e) {
+    if (e.target === this) fecharModal();
+  });
+});
+
+// ─────────────────────────────────────
+// TOGGLE DISPONIBILIDADE
+// ─────────────────────────────────────
 
 function toggleDisp() {
   apenasDisp = !apenasDisp;
@@ -94,31 +210,65 @@ function toggleDisp() {
 }
 
 // ─────────────────────────────────────
-// LISTA DE EMPRESAS
+// LISTA DE EMPRESAS (ATUALIZADO)
 // ─────────────────────────────────────
 
 function filtrar() {
   const busca = document.getElementById("busca").value.toLowerCase();
+
   const filtrados = EMPRESAS.filter(p => {
-    const okC = culturaSel === "Todas" || p.culturas.includes(culturaSel);
+    // Filtro por serviço + sub-itens (via modal)
+    let okS = true;
+    if (Object.keys(filtrosAtivos).length > 0) {
+      okS = Object.entries(filtrosAtivos).some(([servicoId, subs]) => {
+        return p.culturas && p.culturas.some(cultura => subs.includes(cultura));
+      });
+    }
+
+    // Filtro por busca (nome ou cidade)
     const okB = p.nome.toLowerCase().includes(busca) || p.cidade.toLowerCase().includes(busca);
-    return okC && okB && (!apenasDisp || p.disponivel);
+
+    // Filtro por disponibilidade
+    const okDisp = !apenasDisp || p.disponivel;
+
+    return okS && okB && okDisp;
   });
 
   document.getElementById("count-txt").textContent = filtrados.length + " empresas";
-  document.getElementById("lista-title").textContent = culturaSel === "Todas" ? "Especialistas para sua lavoura:" : "Empresas para " + culturaSel;
-  document.getElementById("destaques-section").style.display = (culturaSel === "Todas" && !busca) ? "" : "none";
-  
+
+  // Atualiza o título da lista
+  const titulo = document.getElementById("lista-title");
+  if (titulo) {
+    const servicosSelecionados = Object.keys(filtrosAtivos);
+    if (servicosSelecionados.length > 0) {
+      const nomes = servicosSelecionados.map(id => {
+        const s = SERVICOS.find(serv => serv.id === id);
+        return s ? s.nome : id;
+      }).join(' + ');
+      titulo.textContent = `Empresas com ${nomes}`;
+    } else {
+      titulo.textContent = "Especialistas para sua lavoura:";
+    }
+  }
+
+  // Esconde a seção de destaques quando há filtro ativo
+  const destaqueSection = document.getElementById("destaques-section");
+  if (destaqueSection) {
+    const temFiltro = Object.keys(filtrosAtivos).length > 0;
+    const temBusca = busca.length > 0;
+    destaqueSection.style.display = (temFiltro || temBusca) ? "none" : "";
+  }
+
   const ordem = document.getElementById("ordenar").value;
   if (ordem === "avaliacao") filtrados.sort((a,b) => b.avaliacao - a.avaliacao);
-  else if (ordem === "az") filtrados.sort((a,b) => a.nome.localeCompare(b.nome)); 
-  
+  else if (ordem === "az") filtrados.sort((a,b) => a.nome.localeCompare(b.nome));
+
   const lista = document.getElementById("lista-empresas");
   if (!filtrados.length) {
     lista.innerHTML = '<div class="vazio"><div class="vazio-icon">🔍</div><div class="vazio-title">Nenhum resultado</div><div>Tente outros filtros ou região</div></div>';
     return;
   }
-  
+
   lista.innerHTML = filtrados.map(p =>
     '<div class="card-empresa" onclick="abrirPerfil(\'' + p.slug + '\')">' +
       avatarHtml(p, "avatar-sq", "") +
@@ -198,5 +348,4 @@ function abrirPerfil(slug) {
 // INICIALIZAÇÃO
 // ─────────────────────────────────────
 
-renderFiltros();
 carregarEmpresas();
