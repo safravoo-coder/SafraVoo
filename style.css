@@ -29,9 +29,20 @@ button { cursor: pointer; font-family: inherit; }
 /* ─────────────────────────────────────
    BUSCA E FILTROS
 ───────────────────────────────────── */
-.search-wrap { position: relative; margin-bottom: 9px; }
+.busca-filtro-row { display: flex; align-items: stretch; gap: 8px; margin-bottom: 9px; }
+.search-wrap { position: relative; flex: 1; min-width: 0; margin-bottom: 0; }
 .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 15px; }
 .search-input { width: 100%; border: 1.5px solid #E7E0D8; border-radius: 8px; padding: 9px 16px 11px 34px; font-size: 14px; outline: none; background: #F5F2ED; color: #1C1917; }
+
+.filtro-estado-btn { flex-shrink: 0; display: flex; align-items: center; gap: 6px; border: 1.5px solid #E7E0D8; border-radius: 8px; background: #F5F2ED; padding: 6px 12px; font-size: 11.5px; font-weight: 650; color: #1C1917; line-height: 1.15; text-align: left; white-space: nowrap; }
+.filtro-estado-btn:hover { filter: brightness(0.97); }
+.filtro-estado-btn svg { flex-shrink: 0; }
+
+.busca-sugestoes { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1.5px solid #E7E0D8; border-radius: 8px; max-height: 220px; overflow-y: auto; display: none; z-index: 60; box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+.busca-sugestoes.aberto { display: block; }
+.busca-sugestoes div { padding: 9px 16px; font-size: 13px; color: #1C1917; cursor: pointer; }
+.busca-sugestoes div:hover, .busca-sugestoes div.ativo { background: #F0EBE3; }
+.busca-sugestoes .vazio { color: #A8A29E; cursor: default; }
 .filtros-title{
   margin: 2px 0 10px;
   padding: 0 2px;
