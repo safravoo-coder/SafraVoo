@@ -38,6 +38,8 @@ const SERVICOS = [
 let EMPRESAS = [];
 let apenasDisp = false;
 let filtrosAtivos = {}; // { servicoId: [sub1, sub2, ...] }
+let estadoAtivo = null; // sigla do estado selecionado no filtro (ex: "MT"), null = sem filtro
+let buscaSugestaoIndex = -1;
 
 // ════════════════════════════════════════════════════════
 // CARREGAR EMPRESAS (via Netlify Function)
@@ -210,6 +212,105 @@ function toggleDisp() {
 }
 
 // ─────────────────────────────────────
+// AUTOCOMPLETE DE CIDADE (NOVO)
+// ─────────────────────────────────────
+
+function cidadesDisponiveis() {
+  return [...new Set(EMPRESAS.map(p => p.cidade).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+}
+
+function onBuscaInput() {
+  filtrar(); // mantém o comportamento de busca em tempo real já existente
+  renderSugestoesBusca();
+}
+
+function renderSugestoesBusca() {
+  const input = document.getElementById('busca');
+  const box = document.getElementById('busca-sugestoes');
+  if (!input || !box) return;
+
+  const valor = input.value.trim().toLowerCase();
+  buscaSugestaoIndex = -1;
+
+  if (valor.length === 0) {
+    box.classList.remove('aberto');
+    box.innerHTML = '';
+    return;
+  }
+
+  const opcoes = cidadesDisponiveis().filter(c => c.toLowerCase().includes(valor));
+
+  if (opcoes.length === 0) {
+    box.innerHTML = '<div class="vazio">Nenhuma cidade encontrada</div>';
+    box.classList.add('aberto');
+    return;
+  }
+
+  box.innerHTML = opcoes.map(c => '<div>' + c + '</div>').join('');
+  box.classList.add('aberto');
+
+  box.querySelectorAll('div:not(.vazio)').forEach((el, i) => {
+    el.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      input.value = opcoes[i];
+      box.classList.remove('aberto');
+      filtrar();
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const input = document.getElementById('busca');
+  const box = document.getElementById('busca-sugestoes');
+  if (!input || !box) return;
+
+  input.addEventListener('focus', renderSugestoesBusca);
+
+  input.addEventListener('keydown', (e) => {
+    const opcoes = box.querySelectorAll('div:not(.vazio)');
+    if (!box.classList.contains('aberto') || opcoes.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      buscaSugestaoIndex = (buscaSugestaoIndex + 1) % opcoes.length;
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      buscaSugestaoIndex = (buscaSugestaoIndex - 1 + opcoes.length) % opcoes.length;
+    } else if (e.key === 'Enter' && buscaSugestaoIndex >= 0) {
+      e.preventDefault();
+      opcoes[buscaSugestaoIndex].dispatchEvent(new Event('mousedown'));
+      return;
+    } else if (e.key === 'Escape') {
+      box.classList.remove('aberto');
+      return;
+    } else {
+      return;
+    }
+    opcoes.forEach(o => o.classList.remove('ativo'));
+    opcoes[buscaSugestaoIndex].classList.add('ativo');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-wrap')) box.classList.remove('aberto');
+  });
+});
+
+// ─────────────────────────────────────
+// FILTRO POR ESTADO (NOVO — aguardando campo 'estado' na API)
+// ─────────────────────────────────────
+
+function abrirFiltroEstado() {
+  // TODO: abrir modal com a lista de estados (UFs) disponíveis entre as EMPRESAS.
+  // Quando o campo `estado` existir nos dados da API, chame setEstadoAtivo('MT') ao selecionar.
+  console.log('Abrir modal de filtro por estado (a implementar quando o campo "estado" existir na API)');
+}
+
+function setEstadoAtivo(sigla) {
+  estadoAtivo = sigla || null;
+  filtrar();
+}
+
+// ─────────────────────────────────────
 // LISTA DE EMPRESAS (ATUALIZADO)
 // ─────────────────────────────────────
 
@@ -231,7 +332,10 @@ function filtrar() {
     // Filtro por disponibilidade
     const okDisp = !apenasDisp || p.disponivel;
 
-    return okS && okB && okDisp;
+    // Filtro por estado (via botão "Filtrar por Estado")
+    const okE = !estadoAtivo || p.estado === estadoAtivo;
+
+    return okS && okB && okDisp && okE;
   });
 
   document.getElementById("count-txt").textContent = filtrados.length + " empresas";
