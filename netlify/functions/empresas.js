@@ -37,6 +37,7 @@ exports.handler = async function(event, context) {
       nome: record.fields.nome || '',
       foto: record.fields.foto || '',
       cidade: record.fields.cidade || '',
+      estado: record.fields.estado || '',
       avaliacao: record.fields.avaliacao || 0,
       avaliacoes: record.fields.avaliacoes || 0,
       preco: record.fields.preco || 0,
