@@ -38,7 +38,7 @@ const SERVICOS = [
 let EMPRESAS = [];
 let apenasDisp = false;
 let filtrosAtivos = {}; // { servicoId: [sub1, sub2, ...] }
-let estadoAtivo = null; // sigla do estado selecionado no filtro (ex: "MT"), null = sem filtro
+let estadosAtivos = []; // lista de estados selecionados no filtro (ex: ["Minas Gerais"]), [] = sem filtro
 let buscaSugestaoIndex = -1;
 
 // ════════════════════════════════════════════════════════
@@ -60,6 +60,7 @@ async function carregarEmpresas() {
       nome: p.nome || "",
       foto: p.foto || "",
       cidade: p.cidade || "",
+      estado: p.estado || "",
       avaliacao: p.avaliacao || 0,
       avaliacoes: p.avaliacoes || 0,
       preco: p.preco || 0,
@@ -132,12 +133,14 @@ function renderServicos() {
 // ─────────────────────────────────────
 
 let modalServicoId = null;
+let modalTipo = 'servico'; // 'servico' | 'estado' — define qual lógica o modal genérico aplica
 
 function abrirModal(servicoId) {
   const servico = SERVICOS.find(s => s.id === servicoId);
   if (!servico) return;
 
   modalServicoId = servicoId;
+  modalTipo = 'servico';
   const selecionados = filtrosAtivos[servicoId] || [];
 
   document.getElementById('modal-titulo').textContent = servico.nome;
@@ -170,6 +173,14 @@ function fecharModal() {
 function aplicarFiltro() {
   const opcoes = document.querySelectorAll('#modal-opcoes input[type="checkbox"]:checked');
   const selecionados = Array.from(opcoes).map(el => el.value);
+
+  if (modalTipo === 'estado') {
+    estadosAtivos = selecionados;
+    fecharModal();
+    atualizarBotaoEstado();
+    filtrar();
+    return;
+  }
 
   if (selecionados.length > 0) {
     filtrosAtivos[modalServicoId] = selecionados;
@@ -299,15 +310,56 @@ document.addEventListener('DOMContentLoaded', function() {
 // FILTRO POR ESTADO (NOVO — aguardando campo 'estado' na API)
 // ─────────────────────────────────────
 
-function abrirFiltroEstado() {
-  // TODO: abrir modal com a lista de estados (UFs) disponíveis entre as EMPRESAS.
-  // Quando o campo `estado` existir nos dados da API, chame setEstadoAtivo('MT') ao selecionar.
-  console.log('Abrir modal de filtro por estado (a implementar quando o campo "estado" existir na API)');
+function estadosDisponiveis() {
+  return [...new Set(EMPRESAS.map(p => p.estado).filter(Boolean))].sort((a, b) => a.localeCompare(b));
 }
 
-function setEstadoAtivo(sigla) {
-  estadoAtivo = sigla || null;
-  filtrar();
+function abrirFiltroEstado() {
+  const estados = estadosDisponiveis();
+
+  modalTipo = 'estado';
+
+  document.getElementById('modal-titulo').textContent = 'Estado';
+  document.getElementById('modal-sub').textContent = 'Selecione os estados desejados:';
+
+  const opcoesContainer = document.getElementById('modal-opcoes');
+
+  if (estados.length === 0) {
+    opcoesContainer.innerHTML = '<div class="vazio" style="width:100%; padding:24px 0;">Nenhum estado disponível ainda</div>';
+  } else {
+    opcoesContainer.innerHTML = estados.map(uf => `
+      <label class="${estadosAtivos.includes(uf) ? 'selecionado' : ''}">
+        <input type="checkbox" value="${uf}" ${estadosAtivos.includes(uf) ? 'checked' : ''}>
+        ${uf}
+      </label>
+    `).join('');
+
+    opcoesContainer.querySelectorAll('label').forEach(label => {
+      const checkbox = label.querySelector('input[type="checkbox"]');
+      checkbox.addEventListener('change', function() {
+        label.classList.toggle('selecionado', this.checked);
+      });
+    });
+  }
+
+  document.getElementById('modal-overlay').classList.add('aberto');
+}
+
+function atualizarBotaoEstado() {
+  const label = document.getElementById('filtro-estado-label');
+  const btn = document.getElementById('filtro-estado-btn');
+  if (!label || !btn) return;
+
+  if (estadosAtivos.length === 0) {
+    label.innerHTML = 'Filtrar por<br>Estado...';
+    btn.classList.remove('ativo');
+  } else if (estadosAtivos.length === 1) {
+    label.textContent = estadosAtivos[0];
+    btn.classList.add('ativo');
+  } else {
+    label.textContent = estadosAtivos.length + ' estados';
+    btn.classList.add('ativo');
+  }
 }
 
 // ─────────────────────────────────────
@@ -333,7 +385,7 @@ function filtrar() {
     const okDisp = !apenasDisp || p.disponivel;
 
     // Filtro por estado (via botão "Filtrar por Estado")
-    const okE = !estadoAtivo || p.estado === estadoAtivo;
+    const okE = estadosAtivos.length === 0 || estadosAtivos.includes(p.estado);
 
     return okS && okB && okDisp && okE;
   });
