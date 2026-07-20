@@ -351,7 +351,7 @@ function atualizarBotaoEstado() {
   if (!label || !btn) return;
 
   if (estadosAtivos.length === 0) {
-    label.innerHTML = 'Filtrar por<br>Estado...';
+    label.textContent = 'Filtrar por Estado...';
     btn.classList.remove('ativo');
   } else if (estadosAtivos.length === 1) {
     label.textContent = estadosAtivos[0];
