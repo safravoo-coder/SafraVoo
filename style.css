@@ -34,12 +34,16 @@ button { cursor: pointer; font-family: inherit; }
 .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 15px; }
 .search-input { width: 100%; border: 1.5px solid #E7E0D8; border-radius: 8px; padding: 9px 16px 11px 34px; font-size: 14px; outline: none; background: #F5F2ED; color: #1C1917; }
 
-.filtro-estado-btn { flex-shrink: 0; display: flex; align-items: center; gap: 6px; border: 1.5px solid #E7E0D8; border-radius: 8px; background: #F5F2ED; padding: 6px 12px; font-size: 11.5px; font-weight: 650; color: #1C1917; line-height: 1.15; text-align: left; white-space: nowrap; }
+.filtro-estado-btn { flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 0; border: 1.5px solid #E7E0D8; border-radius: 8px; background: #F5F2ED; padding: 9px 12px; font-size: 13px; font-weight: 650; color: #1C1917; line-height: 1.15; text-align: left; white-space: nowrap; }
 .filtro-estado-btn:hover { filter: brightness(0.97); }
 .filtro-estado-btn svg { flex-shrink: 0; }
-.filtro-estado-btn .filtro-slider-dot { fill: #F5F2ED; }
 .filtro-estado-btn.ativo { background: #DCFCE7; border-color: #16A34A; color: #15803D; }
-.filtro-estado-btn.ativo .filtro-slider-dot { fill: #DCFCE7; }
+.filtro-estado-btn span { display: none; }
+
+@media (min-width: 768px) {
+  .filtro-estado-btn { gap: 8px; padding: 9px 16px; justify-content: flex-start; }
+  .filtro-estado-btn span { display: inline; white-space: nowrap; }
+}
 
 .busca-sugestoes { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1.5px solid #E7E0D8; border-radius: 8px; max-height: 220px; overflow-y: auto; display: none; z-index: 60; box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
 .busca-sugestoes.aberto { display: block; }
