@@ -10,7 +10,7 @@ button { cursor: pointer; font-family: inherit; }
 /* ─────────────────────────────────────
    HEADER
 ───────────────────────────────────── */
-.header { background: #fff; padding: 16px 10px 0; border-bottom: 1px solid #E7E0D8; position: sticky; top: 0; z-index: 50; }
+.header { background: #fff; padding: 16px 10px 0; border-bottom: 1px solid #0F2D22; position: sticky; top: 0; z-index: 50; }
 .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 01px; }
 .container-imagem {
     width: 100%;           /* ou um valor fixo: 800px, 50%, etc */
@@ -32,20 +32,23 @@ button { cursor: pointer; font-family: inherit; }
 .busca-filtro-row { display: flex; align-items: stretch; gap: 8px; margin-bottom: 9px; }
 .search-wrap { position: relative; flex: 1; min-width: 0; margin-bottom: 0; }
 .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 15px; }
-.search-input { width: 100%; border: 1.5px solid #E7E0D8; border-radius: 8px; padding: 9px 16px 11px 34px; font-size: 14px; outline: none; background: #F5F2ED; color: #1C1917; }
+.search-input { width: 100%; border: 1.5px solid #0F2D22; border-radius: 8px; padding: 9px 16px 11px 34px; font-size: 14px; outline: none; background: #F5F2ED; color: #1C1917; }
+ .search-input::placeholder { font-size: 16px; }
 
-.filtro-estado-btn { flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 0; border: 1.5px solid #E7E0D8; border-radius: 8px; background: #F5F2ED; padding: 9px 12px; font-size: 13px; font-weight: 650; color: #1C1917; line-height: 1.15; text-align: left; white-space: nowrap; }
+.filtro-estado-btn { flex-shrink: 0; box-sizing: border-box; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; gap: 0; border: 1.5px solid #0F2D22; border-radius: 8px; background: #F5F2ED; padding: 0; font-size: 13px; font-weight: 650; color: #1C1917; line-height: 1.15; text-align: left; white-space: nowrap; }
 .filtro-estado-btn:hover { filter: brightness(0.97); }
 .filtro-estado-btn svg { flex-shrink: 0; }
 .filtro-estado-btn.ativo { background: #DCFCE7; border-color: #16A34A; color: #15803D; }
 .filtro-estado-btn span { display: none; }
+.filtro-icone { width: 32px; height: 32px; }
 
 @media (min-width: 768px) {
-  .filtro-estado-btn { gap: 8px; padding: 9px 16px; justify-content: flex-start; }
+  .filtro-estado-btn { width: auto; height: auto; gap: 8px; padding: 9px 16px; justify-content: flex-start; }
   .filtro-estado-btn span { display: inline; white-space: nowrap; }
+  .filtro-icone { width: 20px; height: 20px; }
 }
 
-.busca-sugestoes { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1.5px solid #E7E0D8; border-radius: 8px; max-height: 220px; overflow-y: auto; display: none; z-index: 60; box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+.busca-sugestoes { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1.5px solid #0F2D22; border-radius: 8px; max-height: 220px; overflow-y: auto; display: none; z-index: 60; box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
 .busca-sugestoes.aberto { display: block; }
 .busca-sugestoes div { padding: 9px 16px; font-size: 13px; color: #1C1917; cursor: pointer; }
 .busca-sugestoes div:hover, .busca-sugestoes div.ativo { background: #F0EBE3; }
@@ -150,8 +153,8 @@ button { cursor: pointer; font-family: inherit; }
 ───────────────────────────────────── */
 .section-title { font-weight: 650; font-size: 19px; padding: 4px 12px 17px; color:#57534E; }
 .destaques-scroll { display: flex; gap: 10px; overflow-x: auto; padding: 0 11px 7px; scrollbar-width: none; }
-.card-dest { flex-shrink: 0; width: 53vw; max-width: 160px; background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #E7E0D8; box-shadow: 0 1px 1px rgba(0,0,0,0.06); cursor: pointer; }
-.card-dest-top { width: 100%; height: 77px; overflow: hidden; background: #E7E0D8; }
+.card-dest { flex-shrink: 0; width: 53vw; max-width: 160px; background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #0F2D22; box-shadow: 0 1px 1px rgba(0,0,0,0.06); cursor: pointer; }
+.card-dest-top { width: 100%; height: 77px; overflow: hidden; background: #0F2D22; }
 .card-dest-top img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .card-dest-bottom { padding: 6px 8px 9px; }
 .card-dest-main { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 11px; position: relative; }
@@ -194,7 +197,7 @@ button { cursor: pointer; font-family: inherit; }
 .lista-header { display: flex; align-items: center; justify-content: space-between; margin: 16px 17px 8px; }
 .lista-title { font-size: 20px; font-weight: 700; }
 .select-ordem { font-size: 14px; border: 1px solid #E7E5E4; border-radius: 8px; padding: 5px 3px; background: #fff; color: #1C1917; }
-.card-empresa { background: #fff; border-radius: 18px; border: 1px solid #E7E0D8; padding: 16px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 12px; }
+.card-empresa { background: #fff; border-radius: 18px; border: 1px solid #0F2D22; padding: 16px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin-bottom: 12px; }
 .avatar-sq { border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 27px; flex-shrink: 0; width: 52px; height: 52px; overflow: hidden; }
 .avatar-sq img { width: 100%; height: 100%; object-fit: cover; border-radius: 0px; display: block; }
 .empresa-info { flex: 1; min-width: 0; }
@@ -226,11 +229,11 @@ button { cursor: pointer; font-family: inherit; }
 /* ─────────────────────────────────────
    TELA DE PERFIL DA EMPRESA
 ───────────────────────────────────── */
-.perfil-header { background: #fff; display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid #E7E0D8; position: sticky; top: 0; z-index: 50; }
+.perfil-header { background: #fff; display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid #0F2D22; position: sticky; top: 0; z-index: 50; }
 .back-btn { background: #F0EBE3; border: none; border-radius: 12px; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .perfil-title { font-weight: 700; font-size: 16px; }
 .perfil-hero-top { background: #fff; padding: 24px 20px 20px; text-align: center; }
-.perfil-avatar { border-radius: 7px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 28px; margin: 0 auto 12px; width: 200px; height: 90px; overflow: hidden; background: #E7E0D8; }
+.perfil-avatar { border-radius: 7px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 28px; margin: 0 auto 12px; width: 200px; height: 90px; overflow: hidden; background: #0F2D22; }
 .perfil-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; display: block; }
 .perfil-nome { font-weight: 800; font-size: 22px; margin-bottom: 4px; }
 .perfil-loc { font-size: 13px; color: #78716C; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 12px; }
@@ -246,7 +249,7 @@ button { cursor: pointer; font-family: inherit; }
 .stat-val { font-weight: 800; font-size: 15px; }
 .stat-lbl { font-size: 10px; color: #A8A29E; margin-top: 2px; }
 .perfil-body { padding: 14px 16px 100px; display: flex; flex-direction: column; gap: 12px; }
-.info-card { background: #fff; border-radius: 16px; padding: 18px; border: 1px solid #E7E0D8; }
+.info-card { background: #fff; border-radius: 16px; padding: 18px; border: 1px solid #0F2D22; }
 .info-card h3 { font-weight: 700; font-size: 14px; margin-bottom: 10px; }
 .info-card p { font-size: 13px; color: #57534E; line-height: 1.7; margin: 0; }
 .equip-row { display: flex; justify-content: space-between; }
@@ -265,7 +268,7 @@ button { cursor: pointer; font-family: inherit; }
 /* ─────────────────────────────────────
    BOTÃO FIXO DE CONTATO
 ───────────────────────────────────── */
-.cta-fixo { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; padding: 12px 16px calc(16px + env(safe-area-inset-bottom)); background: rgba(245,242,237,0.98); backdrop-filter: blur(12px); border-top: 1px solid #E7E0D8; z-index: 99; }
+.cta-fixo { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 430px; padding: 12px 16px calc(16px + env(safe-area-inset-bottom)); background: rgba(245,242,237,0.98); backdrop-filter: blur(12px); border-top: 1px solid #0F2D22; z-index: 99; }
 .cta-btns { display: flex; gap: 10px; }
 .btn-orc { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; background: #16A34A; color: #fff; border: none; border-radius: 16px; padding: 15px 10px; font-size: 14px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 20px rgba(22,163,74,0.3); }
 .btn-wpp { flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px; background: #fff; color: #16A34A; border: 1.5px solid #16A34A; border-radius: 16px; padding: 15px 10px; font-size: 14px; font-weight: 700; text-decoration: none; }
@@ -404,9 +407,8 @@ button { cursor: pointer; font-family: inherit; }
   color: #78716C;
 }
 .btn-cancelar:hover {
-  background: #E7E0D8;
+  background: #0F2D22;
 }
 /* ═══════════════════════════════════════
    FIM DO MODAL
    ═══════════════════════════════════════ */
-
