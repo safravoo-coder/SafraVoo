@@ -7,7 +7,7 @@ const path = require('path');
 // ════════════════════════════════════════════════════════
 
 const ORIGEM = __dirname;
-const DESTINO = path.join(__dirname, 'dist');
+const DESTINO = path.join(__dirname, 'dist'):
 const EMPRESAS_API = 'https://safravoo.com.br/.netlify/functions/empresas';
 
 // Arquivos estáticos que serão copiados para a pasta dist
