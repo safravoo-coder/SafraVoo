@@ -1,0 +1,70 @@
+# netlify.toml — Configuração do build e redirecionamentos
+
+[build]
+  command = "node build.js"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# ════════════════════════════════════════════════════════
+# REDIRECIONAMENTOS E REWRITES
+# ════════════════════════════════════════════════════════
+
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/empresa/*"
+  to = "/empresa/:splat/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/index"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+
+# Sitemap dinâmico (se você tiver a function)
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/.netlify/functions/sitemap"
+  status = 200
+
+# 404 amigável
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404
+
+# ════════════════════════════════════════════════════════
+# HEADERS (cache, segurança, etc.)
+# ════════════════════════════════════════════════════════
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/style.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/script.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
