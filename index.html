@@ -7,14 +7,33 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date()); gtag('config', 'G-7GR2ZW1K2X');
-</script>
+  </script>
 
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta name="theme-color" content="#16A34A"/>
-  <title>SafraVoo — A melhor solução para a sua lavoura🌱</title>
-  
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{META_DESCRIPTION}}"/>
+
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Texto acessível/indexável equivalente ao que aparece na imagem do banner.
+       Fica visível para leitores de tela e para o Google, mas não altera o visual
+       (a imagem continua aparecendo normalmente por cima). Quando o banner for
+       trocado pela versão com texto em HTML real, este bloco pode ser removido. */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 </head>
 <body>
 <div class="web">
@@ -23,7 +42,10 @@
        TELA HOME
   ══════════════════════════════════ -->
   <div id="tela-home" class="pb80">
-    <img src="layout.png" alt="SafraVoo" class="imagem-responsiva">
+    <h1 class="sr-only">SafraVoo</h1>
+    <p class="sr-only">Os melhores profissionais para a sua lavoura em um só lugar</p>
+
+    <img src="layout.png" alt="Drone agrícola pulverizando lavoura ao pôr do sol — SafraVoo, marketplace de serviços agrícolas com drone" class="imagem-responsiva">
     <div class="header">
       <div class="header-top">
       </div>
@@ -45,16 +67,9 @@
           </svg>
         </button>
       </div>
-      
-      <!-- ══════════════════════════════════
-           NOVA SEÇÃO: SERVIÇO DESEJADO
-      ══════════════════════════════════ -->
-      <h3 class="filtros-title">Serviço desejado:</h3>
-      <div class="servicos-container" id="servicos-container"></div>
-      <!-- ══════════════════════════════════
-           FIM DA NOVA SEÇÃO
-      ══════════════════════════════════ -->
 
+      <h3 class="filtros-title">Serviço desejado:</h3>
+      <div class="servicos-container" id="servicos-container">{{SERVICOS_HTML}}</div>
     </div>
 
     <div class="toggle-row">
@@ -62,16 +77,16 @@
         <div class="dot" id="dot-disp"></div>
         <span id="toggle-txt">Mostrar só disponíveis</span>
       </button>
-      <span class="count" id="count-txt"></span>
+      <span class="count" id="count-txt">{{COUNT_TXT}}</span>
     </div>
 
     <div id="destaques-section">
       <div class="section-title">Destaques</div>
-      <div class="destaques-scroll" id="destaques"></div>
+      <div class="destaques-scroll" id="destaques">{{DESTAQUES_HTML}}</div>
     </div>
 
     <div class="banner-trust">
-      <img src="banner-produtor.png" alt="Profissionais verificados. Equipamentos certificados.">
+      <img src="banner-produtor.png" alt="Profissionais verificados e equipamentos certificados no SafraVoo.">
     </div>
 
     <div class="lista">
@@ -83,7 +98,7 @@
     <option value="az">A a Z</option>
   </select>
 </div>
-      <div id="lista-empresas"></div>
+      <div id="lista-empresas">{{LISTA_HTML}}</div>
     </div>
 
     <div class="banner">
@@ -120,4 +135,3 @@
 
 </body>
 </html>
-
